@@ -1,4 +1,4 @@
-package com.darts.dartsapp;
+package com.darts.dartsapp.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
