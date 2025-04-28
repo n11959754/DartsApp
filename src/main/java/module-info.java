@@ -7,4 +7,6 @@ module com.darts.dartsapp {
     exports com.darts.dartsapp;
     exports com.darts.dartsapp.controller;
     opens com.darts.dartsapp.controller to javafx.fxml;
+    exports com.darts.dartsapp.controller.calendar;
+    opens com.darts.dartsapp.controller.calendar to javafx.fxml;
 }
