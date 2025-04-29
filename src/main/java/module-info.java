@@ -1,6 +1,7 @@
 module com.darts.dartsapp {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens com.darts.dartsapp to javafx.fxml;
