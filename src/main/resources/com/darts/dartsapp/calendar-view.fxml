@@ -19,31 +19,9 @@
 
     <BorderPane prefHeight="768" prefWidth="1324">
 
+        <!-- Top Menu Bar -->
         <top>
-            <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" style="-fx-background-color: #2F638F;">
-                <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
-                <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-                <Region HBox.hgrow="ALWAYS" />
-
-                <!--user profile icon-->
-                <Button onAction="#handleProfileImageClick" style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;">
-                    <graphic>
-                        <ImageView fitHeight="35" fitWidth="35" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/profile_pic.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <HBox.margin>
-                        <Insets right="15.0" />
-                    </HBox.margin>
-                </Button>
-            </HBox>
+            <fx:include source="ToolBar-view.fxml" />
         </top>
 
         <left>

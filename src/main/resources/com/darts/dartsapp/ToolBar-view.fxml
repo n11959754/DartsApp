@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.darts.dartsapp.controller.ToolBarController"
+      prefHeight="60.0"
+      alignment="CENTER_LEFT"
+      spacing="10"
+      style="-fx-background-color: #2F638F;">
+
+    <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
+    <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+
+    <Region HBox.hgrow="ALWAYS" />
+
+    <!--user profile icon-->
+
+    <Button style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;">
+        <graphic>
+            <ImageView fitHeight="35" fitWidth="35" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/profile_pic.png" />
+                </image>
+            </ImageView>
+        </graphic>
+        <HBox.margin>
+            <Insets right="15.0" />
+        </HBox.margin>
+    </Button>
+</HBox>

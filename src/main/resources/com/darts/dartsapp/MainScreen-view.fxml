@@ -14,18 +14,7 @@
             prefHeight="400.0" prefWidth="600.0">
     <!-- Top Menu Bar -->
     <top>
-        <HBox spacing="10" style="-fx-background-color: #2F638F;" alignment="CENTER_LEFT" prefHeight="60">
-            <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <ImageView fitHeight="40" fitWidth="40"/>
-        </HBox>
-
+        <fx:include source="ToolBar-view.fxml" />
     </top>
 
     <!-- Left Side Blue Bar -->
