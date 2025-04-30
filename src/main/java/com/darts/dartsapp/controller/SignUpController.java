@@ -1,5 +1,6 @@
 package com.darts.dartsapp.controller;
 
+import com.darts.dartsapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -48,6 +49,9 @@ public class SignUpController {
 
     @FXML
     private void onBackButtonClick() throws IOException {
+        DatabaseController db = new DatabaseController();
+        User user = new User(UsernameField.getText(), EmailField.getText(), PhoneField.getText(), PasswordField.getText());
+        db.usersTable().createUser(user);
         Stage stage = (Stage) BackButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/LandingPage-view.fxml"));
 

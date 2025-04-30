@@ -47,7 +47,8 @@
                 GridPane.rowIndex="3"
                 GridPane.columnSpan="2"
                 alignment="center"
-                style="-fx-font-size: 14px; -fx-background-color: #2F638F; -fx-text-fill: white; -fx-pref-width:250px; -fx-pref-height: 40px;" />
+                style="-fx-font-size: 14px; -fx-background-color: #2F638F; -fx-text-fill: white; -fx-pref-width:250px; -fx-pref-height: 40px;"
+                onAction="#onButtonLoginClick"/>
 
         <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="4" GridPane.columnSpan="2">
             <!-- Forgot password button -->

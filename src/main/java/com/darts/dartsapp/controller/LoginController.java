@@ -1,5 +1,6 @@
 package com.darts.dartsapp.controller;
 
+import com.darts.dartsapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,6 +28,8 @@ public class LoginController {
     @FXML
     private Button SignUpButton;
 
+    private DatabaseController db;
+
     @FXML
     protected void onButtonSignUpClick() throws IOException {
         Stage stage = (Stage) SignUpButton.getScene().getWindow();
@@ -34,6 +37,25 @@ public class LoginController {
 
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
         stage.setScene(scene);
+    }
+
+    @FXML
+    protected void onButtonLoginClick() throws IOException {
+
+        db = new DatabaseController();
+        User user = db.usersTable().getUser(UsernameField.getText());
+        if (user.getPassword().equals(PasswordField.getText())) {
+            Stage stage = (Stage) SignUpButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
+
+            Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
+            stage.setScene(scene);
+        }
+        else {
+            //send a message to the user saying the password or username was wrong
+        }
+
+
     }
 
 }

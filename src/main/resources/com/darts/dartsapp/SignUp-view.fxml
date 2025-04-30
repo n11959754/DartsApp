@@ -65,13 +65,14 @@
                            promptText="Select Birthday"
                            style="-fx-pref-height: 40px;"/>
 
-            <!--        Login Button -->
+            <!--        Create Account Button -->
             <Button text="Create Account"
-                    fx:id="SignUpButton"
+                    fx:id="BackButton"
                     GridPane.rowIndex="6"
                     GridPane.columnSpan="2"
                     alignment="center"
-                    style="-fx-font-size: 14px; -fx-background-color: #2F638F; -fx-text-fill: white; -fx-pref-width:300px; -fx-pref-height: 40px;" />
+                    style="-fx-font-size: 14px; -fx-background-color: #2F638F; -fx-text-fill: white; -fx-pref-width:300px; -fx-pref-height: 40px;"
+                    onAction="#onBackButtonClick"/>
 
 
 
