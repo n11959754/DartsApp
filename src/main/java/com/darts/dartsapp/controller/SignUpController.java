@@ -9,7 +9,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Alert;
 import java.io.IOException;
 
 public class SignUpController {
@@ -49,6 +49,43 @@ public class SignUpController {
 
     @FXML
     private void onBackButtonClick() throws IOException {
+
+        String username = UsernameField.getText();
+        String email = EmailField.getText();
+        String phone = PhoneField.getText();
+        String password = PasswordField.getText();
+
+        if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || BirthdayField.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Account Creation Failed");
+            alert.setHeaderText("A field is not filled out.");
+            alert.showAndWait();
+            return;
+        }
+        if (password.length() < 10) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Account Creation Failed");
+            alert.setHeaderText("Entered password is invalid.");
+            alert.setContentText("Passwords must be greater than 10 characters");
+            alert.showAndWait();
+            return;
+        }
+        if (!email.contains(".") || !email.contains("@")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Account Creation Failed");
+            alert.setHeaderText("Entered email is invalid.");
+            alert.showAndWait();
+            return;
+        }
+        if (phone.length() != 10) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Account Creation Failed");
+            alert.setHeaderText("Entered phone number is invalid.");
+            alert.showAndWait();
+            return;
+        }
+
+
         DatabaseController db = new DatabaseController();
         User user = new User(UsernameField.getText(), EmailField.getText(), PhoneField.getText(), PasswordField.getText());
         db.usersTable().createUser(user);

@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Alert;
 import java.io.IOException;
 
 public class LoginController {
@@ -44,7 +44,7 @@ public class LoginController {
 
         db = new DatabaseController();
         User user = db.usersTable().getUser(UsernameField.getText());
-        if (user.getPassword().equals(PasswordField.getText())) {
+        if (user != null && user.getPassword().equals(PasswordField.getText())) {
             Stage stage = (Stage) SignUpButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
 
@@ -52,7 +52,10 @@ public class LoginController {
             stage.setScene(scene);
         }
         else {
-            //send a message to the user saying the password or username was wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Failed");
+            alert.setHeaderText("Username or Password is incorrect.");
+            alert.showAndWait();
         }
 
 

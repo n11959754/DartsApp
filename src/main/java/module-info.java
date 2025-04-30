@@ -1,8 +1,9 @@
 module com.darts.dartsapp {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.sql;
     requires javafx.graphics;
+    requires java.sql;
+
 
 
     opens com.darts.dartsapp to javafx.fxml;
