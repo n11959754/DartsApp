@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
@@ -18,11 +15,12 @@
       spacing="10"
       style="-fx-background-color: #2F638F;">
 
+    <!--navigation buttons-->
     <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
-    <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-    <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button fx:id="MainScreen" text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onMainScreenClick"/>
+    <Button fx:id="Announcements" text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onAnnouncementsClick"/>
     <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-    <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button fx:id="Settings" text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onSettingsClick"/>
     <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
     <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
 
@@ -33,9 +31,7 @@
     <Button style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;">
         <graphic>
             <ImageView fitHeight="35" fitWidth="35" pickOnBounds="true" preserveRatio="true">
-                <image>
                     <Image url="@images/profile_pic.png" />
-                </image>
             </ImageView>
         </graphic>
         <HBox.margin>

@@ -10,19 +10,16 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class CalendarController {
 
-    @FXML private Label welcomeText;
-
     // FXML Fields
     @FXML private Label monthYearLabel;
-    @FXML private Button prevMonthButton;
-    @FXML private Button nextMonthButton;
+    //@FXML private Button prevMonthButton;
+    //@FXML private Button nextMonthButton;
     @FXML private GridPane calendarGrid;
 
     // colours for the calendar
@@ -33,7 +30,6 @@ public class CalendarController {
     // controller State
     private YearMonth currentYearMonth;
     private Node currentlySelectedCell = null;
-
     private final DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy"); // Corrected pattern
 
     // initialises the controller class automatically called after fxml file has been loaded
@@ -130,10 +126,8 @@ public class CalendarController {
     @FXML
     private void handleDateCellClick(MouseEvent event) {
         Node clickedNode = (Node) event.getSource();
-        if (!(clickedNode instanceof StackPane)) { return; }
-        StackPane clickedCell = (StackPane) clickedNode;
-        if (clickedCell.getChildren().isEmpty() || !(clickedCell.getChildren().get(0) instanceof Label)) { clearSelection(); return; }
-        Label label = (Label) clickedCell.getChildren().get(0);
+        if (!(clickedNode instanceof StackPane clickedCell)) { return; }
+        if (clickedCell.getChildren().isEmpty() || !(clickedCell.getChildren().getFirst() instanceof Label label)) { clearSelection(); return; }
         if (label.getText() == null || label.getText().trim().isEmpty()) { clearSelection(); return; }
 
         // if selected cell is clicked again the colour is reset
