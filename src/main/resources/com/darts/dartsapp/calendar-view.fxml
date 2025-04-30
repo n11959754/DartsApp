@@ -21,13 +21,13 @@
 
         <top>
             <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" style="-fx-background-color: #2F638F;">
-                <Button style="-fx-font-size: 20px; -fx-background-color: transparent; -fx-text-fill: white;" text="☰" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="DartsApp" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="Announcements" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="Tasks" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="Settings" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="Canvas" />
-                <Button style="-fx-background-color: transparent; -fx-text-fill: white;" text="Email" />
+                <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
+                <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
                 <Region HBox.hgrow="ALWAYS" />
 
                 <!--user profile icon-->

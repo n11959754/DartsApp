@@ -15,13 +15,13 @@
     <!-- Top Menu Bar -->
     <top>
         <HBox spacing="10" style="-fx-background-color: #2F638F;" alignment="CENTER_LEFT" prefHeight="60">
-            <Button text="☰" style="-fx-font-size: 20px; -fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
-            <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
             <Region HBox.hgrow="ALWAYS"/>
             <ImageView fitHeight="40" fitWidth="40"/>
         </HBox>
@@ -55,13 +55,13 @@
                     </rowConstraints>
 
 <!--                    Day Headings-->
-                    <Label text="Mon" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Tue" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Wed" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Thur" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Fri" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Sat" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Sun" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-font-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Mon" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Tue" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Wed" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Thur" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Fri" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Sat" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Sun" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
 
 <!--                    Calandar content settings-->
                     <Pane GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;"/>
