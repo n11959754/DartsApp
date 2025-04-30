@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import java.io.IOException;
+import java.util.Objects;
 
 public class LandingPageController {
 
@@ -22,7 +23,7 @@ public class LandingPageController {
 
     public void initialize() {
         // Load the image from the resources folder
-        Image image = new Image(getClass().getResourceAsStream("/images/placeholder1.png"));
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/darts/dartsapp/images/placeholder1.png")));
 
         // Set the loaded image to the ImageView
         imageView.setImage(image);
