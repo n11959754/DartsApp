@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.darts.dartsapp.controller.SettingsPage_Controller"
+            prefWidth="1324" prefHeight="768">
+
+    <!-- Top Menu Bar -->
+    <top>
+        <HBox spacing="10" style="-fx-background-color: #2F638F;" alignment="CENTER_LEFT" prefHeight="60">
+            <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ImageView fitHeight="40" fitWidth="40"/>
+        </HBox>
+    </top>
+
+    <!-- Left Side Blue Bar -->
+    <left>
+        <VBox style="-fx-background-color: #2F638F;" prefWidth="60">
+        </VBox>
+    </left>
+
+    <!-- Main Center Layout -->
+    <center>
+        <GridPane hgap="40" vgap="20">
+            <padding>
+                <Insets top="40" right="40" bottom="40" left="40"/>
+            </padding>
+
+            <columnConstraints>
+                <ColumnConstraints percentWidth="60"/>
+                <ColumnConstraints percentWidth="40"/>
+            </columnConstraints>
+
+            <!-- Settings Text -->
+            <Label text="Settings" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
+
+            <!-- Left Section: Edit Account Info + Display -->
+            <VBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="1">
+
+                <!-- Edit Account Info -->
+                <VBox spacing="5">
+                    <Label text="Edit Account Info" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                    <Label text="Username: test1234"/>
+                    <Label text="Password: ********"/>
+                    <Label text="Email: test******@connect.qut.edu.au"/>
+                    <Label text="Phone Number: 0123456789"/>
+                    <Label text="Birthday: 01/01/2000"/>
+                </VBox>
+
+                <!-- Display and Appearance -->
+                <VBox spacing="5">
+                    <padding>
+                        <Insets top="20" right="0" bottom="0" left="0"/>
+                    </padding>
+                    <Label text="Display and Appearance" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Display Appearance:"/>
+                        <Button text="Light"/>
+                        <Button text="Dark"/>
+                    </HBox>
+                    <Label text="Text Size 16px"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Date Format:"/>
+                        <Button text="dd/mm/yyyy"/>
+                        <Button text="mm/dd/yyyy"/>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Time Format:"/>
+                        <Button text="12hr Time"/>
+                        <Button text="24hr Time"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Account Management -->
+                <VBox spacing="5">
+                    <padding>
+                        <Insets top="20" right="0" bottom="0" left="0"/>
+                    </padding>
+                    <Label text="Account Management" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                    <Button text="Logout" style="-fx-text-fill: black;"/>
+                    <Button text="Delete Account" style="-fx-text-fill: red;"/>
+                </VBox>
+            </VBox>
+
+            <!-- Right Section: Account Info Preview -->
+            <VBox spacing="15" style="-fx-background-color: #ADD8E6; -fx-padding: 30; -fx-background-radius: 15;"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="TOP_CENTER">
+                <ImageView fitWidth="80" fitHeight="80"/>
+                <Label text="Account Info Preview" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                <Label text="Username: test1234"/>
+                <Label text="Password: ********"/>
+                <Label text="Email: test******@connect.qut.edu.au"/>
+                <Label text="Phone Number: 0123456789"/>
+                <Label text="Birthday: 01/01/2000"/>
+            </VBox>
+
+        </GridPane>
+    </center>
+
+</BorderPane>

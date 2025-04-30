@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darts.dartsapp.controller.calendar.CalendarController">
+
+    <BorderPane prefHeight="768" prefWidth="1324">
+
+        <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" style="-fx-background-color: #2F638F;">
+                <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
+                <Button text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Announcements" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+                <Region HBox.hgrow="ALWAYS" />
+
+                <!--user profile icon-->
+                <Button onAction="#handleProfileImageClick" style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;">
+                    <graphic>
+                        <ImageView fitHeight="35" fitWidth="35" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/profile_pic.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets right="15.0" />
+                    </HBox.margin>
+                </Button>
+            </HBox>
+        </top>
+
+        <left>
+            <VBox prefWidth="60" style="-fx-background-color: #2F638F;">
+            </VBox>
+        </left>
+
+        <center>
+            <VBox alignment="TOP_CENTER" spacing="10" style="-fx-background-color: white;">
+                <padding>
+                    <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+                </padding>
+
+                <!--calendar month (<MONTH>)-->
+                <HBox alignment="CENTER" spacing="15">
+                    <Button fx:id="prevMonthButton" onAction="#handlePreviousMonth" style="-fx-font-size: 12px;" text="&lt;" />
+                    <Label fx:id="monthYearLabel" prefWidth="250"  alignment="CENTER" style="-fx-font-weight: bold; -fx-font-size: 30px;" text="MARCH" />
+                    <Button fx:id="nextMonthButton" onAction="#handleNextMonth" style="-fx-font-size: 12px;" text="&gt;" />
+                </HBox>
+
+                <!--calendar date boxes size (width, height)-->
+                <GridPane fx:id="calendarGrid" hgap="2" style="-fx-background-color: #ffffff;" vgap="2">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="96.0" prefHeight="96.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+
+                    <!--calendar day boxes (mon,tues,...)-->
+                    <children>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Monday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Tuesday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Wednesday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Thursday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Friday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="5" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Saturday" />
+                        </StackPane>
+                        <StackPane style="-fx-background-color: #2F638F;" GridPane.columnIndex="6" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;" text="Sunday" />
+                        </StackPane>
+                    </children>
+                </GridPane>
+            </VBox>
+        </center>
+
+    </BorderPane>
+
+</VBox>
