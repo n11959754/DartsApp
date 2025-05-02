@@ -37,6 +37,28 @@ public class SignUpController {
     @FXML
     private Button BackButton;
 
+    public String ValidateSignUp(String username, String email, String phone, String password) {
+        // if any fields are left empty
+        if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
+            return "A field is not filled out.";
+        }
+        // if password is less than 10 characters
+        if (password.length() < 10) {
+            return "Passwords must be greater than 10 characters.";
+        }
+        // if email isnt valid
+        if (!email.contains("@") || !email.contains(".")) {
+            return "Entered email is invalid.";
+        }
+        // if phone isn't valid
+        if (phone.length() != 10) {
+            return "Entered phone number is invalid.";
+        }
+        // if valid
+        return null;
+    }
+
+
     @FXML
     protected void onButtonLoginClick() throws IOException {
         Stage stage = (Stage) LoginButton.getScene().getWindow();
@@ -55,35 +77,16 @@ public class SignUpController {
         String phone = PhoneField.getText();
         String password = PasswordField.getText();
 
-        if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || BirthdayField.getValue() == null) {
+        String SignUpError = ValidateSignUp(username, email, phone, password);
+
+        if (SignUpError != null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Account Creation Failed");
-            alert.setHeaderText("A field is not filled out.");
+            alert.setHeaderText(SignUpError);
             alert.showAndWait();
             return;
         }
-        if (password.length() < 10) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Account Creation Failed");
-            alert.setHeaderText("Entered password is invalid.");
-            alert.setContentText("Passwords must be greater than 10 characters");
-            alert.showAndWait();
-            return;
-        }
-        if (!email.contains(".") || !email.contains("@")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Account Creation Failed");
-            alert.setHeaderText("Entered email is invalid.");
-            alert.showAndWait();
-            return;
-        }
-        if (phone.length() != 10) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Account Creation Failed");
-            alert.setHeaderText("Entered phone number is invalid.");
-            alert.showAndWait();
-            return;
-        }
+
 
 
         DatabaseController db = new DatabaseController();
