@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.DatePicker?>
 
+<?import javafx.scene.control.ToggleButton?>
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.darts.dartsapp.controller.SignUpController">
@@ -40,6 +41,19 @@
                            GridPane.columnIndex="1"
                            promptText="Enter Password"
                            style="-fx-pref-height: 40px;"/>
+            <TextField fx:id="VisiblePasswordField"
+                       GridPane.rowIndex="2"
+                       GridPane.columnIndex="1"
+                       promptText="Enter Password"
+                       style="-fx-pref-height: 40px;"
+                       visible="false"
+                       managed="false"/>
+            <ToggleButton fx:id="PasswordToggle"
+                          GridPane.rowIndex="2"
+                          GridPane.columnIndex="2"
+                          onAction="#onPasswordToggle"
+                          Text="Show"
+            />
 
             <!--        Email label and field -->
             <Label text="Email:" GridPane.rowIndex="3" />

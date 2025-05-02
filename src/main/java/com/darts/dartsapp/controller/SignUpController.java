@@ -4,12 +4,9 @@ import com.darts.dartsapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
+
 import java.io.IOException;
 
 public class SignUpController {
@@ -18,6 +15,12 @@ public class SignUpController {
 
     @FXML
     private PasswordField PasswordField;
+
+    @FXML
+    private TextField VisiblePasswordField;
+
+    @FXML
+    private ToggleButton PasswordToggle;
 
     @FXML
     private TextField EmailField;
@@ -36,6 +39,25 @@ public class SignUpController {
 
     @FXML
     private Button BackButton;
+
+    @FXML
+    protected void onPasswordToggle() throws IOException {
+        if (PasswordToggle.isSelected()) {
+            VisiblePasswordField.setText(PasswordField.getText());
+            VisiblePasswordField.setVisible(true);
+            VisiblePasswordField.setManaged(true);
+            PasswordField.setVisible(false);
+            PasswordField.setManaged(false);
+            PasswordToggle.setText("Hide");
+        } else {
+            PasswordField.setText(VisiblePasswordField.getText());
+            PasswordField.setVisible(true);
+            PasswordField.setManaged(true);
+            VisiblePasswordField.setVisible(false);
+            VisiblePasswordField.setManaged(false);
+            PasswordToggle.setText("Show");
+        }
+    }
 
     public String ValidateSignUp(String username, String email, String phone, String password) {
         // if any fields are left empty
