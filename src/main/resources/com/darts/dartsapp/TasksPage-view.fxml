@@ -13,7 +13,7 @@
 
     <!-- Top Menu Bar -->
     <top>
-        <fx:include source="ToolBar-view.fxml" />
+            <fx:include source="ToolBar-view.fxml" />
     </top>
 
     <!-- Left Side Blue Bar -->
@@ -21,6 +21,22 @@
         <VBox style="-fx-background-color: #2F638F;" prefWidth="60">
         </VBox>
     </left>
+    <center>
+        <HBox spacing="10" style="-fx-padding: 10 0 10 20">
+
+            <!-- Tasks toolbar -->
+            <Label text="Tasks" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+            <Label text="|" style="-fx-font-size: 20px;" />
+            <Button text="Select" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" />
+            <Label text="|" style="-fx-font-size: 20px;" />
+            <Button text="Edit" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" />
+            <Label text="|" style="-fx-font-size: 20px;" />
+            <Button text="Delete" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" />
+            <Label text="|" style="-fx-font-size: 20px;" />
+            <Button text="Add" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" />
+
+        </HBox>
 
 
+    </center>
 </BorderPane>

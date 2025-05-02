@@ -16,6 +16,7 @@ public class ToolBarController {
     @FXML private Button MainScreen;
     @FXML private Button Settings;
     @FXML private Button Announcements;
+    @FXML private Button Tasks;
 
     // takes user to main screen
     @FXML
@@ -42,6 +43,15 @@ public class ToolBarController {
     protected void onAnnouncementsClick() throws IOException {
         Stage stage = (Stage) Announcements.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/calendar-view.fxml"));
+
+        Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
+        stage.setScene(scene);
+    }
+
+    @FXML
+    protected void onTasksClick() throws IOException {
+        Stage stage = (Stage) Tasks.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/TasksPage-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
         stage.setScene(scene);
