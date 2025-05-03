@@ -21,8 +21,8 @@
     <Button fx:id="Announcements" text="Calandar" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onAnnouncementsClick"/>
     <Button fx:id="Tasks" text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onTasksClick"/>
     <Button fx:id="Settings" text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onSettingsClick"/>
-    <Button text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
-    <Button text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;"/>
+    <Button fx:id="Canvas" text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onCanvasClick"/>
+    <Button fx:id="Email" text="Email" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onEmailClick"/>
 
     <Region HBox.hgrow="ALWAYS" />
 

@@ -56,4 +56,18 @@ public class ToolBarController {
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
         stage.setScene(scene);
     }
+    @FXML
+    protected void onCanvasClick() throws IOException {
+        String url = "https://canvas.qut.edu.au/";
+        java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+    }
+
+    @FXML
+    protected void onEmailClick() throws IOException {
+        String url = "https://outlook.office365.com/mail/";
+        java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+    }
 }
+
+
+// java.awt.Desktop.getDesktop().browse(theURI);

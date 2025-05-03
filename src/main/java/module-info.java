@@ -3,7 +3,7 @@ module com.darts.dartsapp {
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.sql;
-
+    requires java.desktop;
 
 
     opens com.darts.dartsapp to javafx.fxml;
