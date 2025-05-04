@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Build project
         run: mvn clean install
@@ -24,7 +24,7 @@ jobs:
       - name: Generate Javadoc
         run: mvn javadoc:javadoc
 
-      - name: Publish Javadoc to GitHub Pages
+      - name: Publish Javadoc
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: target/site/apidocs
+          folder: target/docs/javadoc
