@@ -52,7 +52,7 @@ public class LoginController {
             PasswordToggle.setText("Show");
         }
     }
-
+    //.
     @FXML
     protected void onButtonSignUpClick() throws IOException {
         Stage stage = (Stage) SignUpButton.getScene().getWindow();
