@@ -1,5 +1,6 @@
 package com.darts.dartsapp.controller;
 
+import com.darts.dartsapp.model.Session;
 import com.darts.dartsapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,6 +69,7 @@ public class LoginController {
         db = new DatabaseController();
         User user = db.usersTable().getUser(UsernameField.getText());
         if (user != null && user.getPassword().equals(PasswordField.getText())) {
+            Session.setCurrentUser(user);
             Stage stage = (Stage) SignUpButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
 
