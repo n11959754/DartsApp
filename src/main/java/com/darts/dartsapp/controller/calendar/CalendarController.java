@@ -18,8 +18,6 @@ public class CalendarController {
 
     // FXML Fields
     @FXML private Label monthYearLabel;
-    //@FXML private Button prevMonthButton;
-    //@FXML private Button nextMonthButton;
     @FXML private GridPane calendarGrid;
 
     // colours for the calendar
