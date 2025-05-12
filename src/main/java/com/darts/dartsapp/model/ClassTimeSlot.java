@@ -4,13 +4,15 @@ public class ClassTimeSlot {
 
     private int timeSlotID;
     private int classID;
-    private String lectureTime;
-    private String tutTime;
+    private String time;
+    private String type;
+    private String colour;
 
-    public ClassTimeSlot(int classID, String lectureTime, String tutTime) {
+
+    public ClassTimeSlot(int classID, String time, String type) {
         this.classID = classID;
-        this.lectureTime = lectureTime;
-        this.tutTime = tutTime;
+        this.time = time;
+        this.type = type;
     }
 
     public void setTimeSlotID(int id) { this.timeSlotID = id; }
@@ -21,11 +23,15 @@ public class ClassTimeSlot {
 
     public int getClassID() { return classID; }
 
-    public void setLectureTime(String lectureTime) { this.lectureTime = lectureTime; }
+    public void setTime(String time) { this.time = time; }
 
-    public String getLectureTime() { return lectureTime; }
+    public String getTime() { return time; }
 
-    public void setTutTime(String tutTime) { this.tutTime = tutTime; }
+    public void setType(String type) { this.type = type; }
 
-    public String getTutTime() { return tutTime; }
+    public String getType() { return type; }
+
+    public void setColour(String colour) { this.colour = colour; }
+
+    public String getColour() { return colour; }
 }
