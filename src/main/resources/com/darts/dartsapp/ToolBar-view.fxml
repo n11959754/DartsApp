@@ -28,9 +28,9 @@
 
     <!--user profile icon-->
 
-    <Button style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;">
+    <Button style="-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;" fx:id="profileButton">
         <graphic>
-            <ImageView fitHeight="35" fitWidth="35" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="45" fitWidth="45" pickOnBounds="true" preserveRatio="true">
                     <Image url="@images/profile_pic.png" />
             </ImageView>
         </graphic>

@@ -2,11 +2,15 @@ package com.darts.dartsapp.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
 
 
 
@@ -17,6 +21,38 @@ public class ToolBarController {
     @FXML private Button Settings;
     @FXML private Button Calendar;
     @FXML private Button Tasks;
+
+    @FXML private Button profileButton;
+    private ContextMenu profileMenu;
+
+    @FXML
+    public void initialize(){    //Profile Pic in corner drop down menu (context menu)
+
+        profileMenu = new ContextMenu();
+
+        MenuItem settings = new MenuItem("Settings");
+        MenuItem signOut = new MenuItem("Sign Out");
+
+
+        settings.setOnAction(e -> {
+            //open settings
+        });                                                     //actions for the context menu buttons
+
+        signOut.setOnAction(e -> {
+            //sign out
+        });
+
+        profileMenu.getItems().addAll(settings, signOut);
+
+        profileButton.setOnAction(e -> {
+            if (profileMenu.isShowing()){
+                profileMenu.hide();
+            }                                                   //code to show / hide profile menu when clicked
+            else {
+                profileMenu.show(profileButton, Side.BOTTOM, 0, 0);
+            }
+        });
+    }
 
     // takes user to main screen
     @FXML
