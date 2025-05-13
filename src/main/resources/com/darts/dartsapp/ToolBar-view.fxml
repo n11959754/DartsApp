@@ -18,7 +18,7 @@
     <!--navigation buttons-->
     <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
     <Button fx:id="MainScreen" text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onMainScreenClick"/>
-    <Button fx:id="Announcements" text="Calandar" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onAnnouncementsClick"/>
+    <Button fx:id="Calendar" text="Calendar" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onCalendarClick"/>
     <Button fx:id="Tasks" text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onTasksClick"/>
     <Button fx:id="Settings" text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onSettingsClick"/>
     <Button fx:id="Canvas" text="Canvas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onCanvasClick"/>

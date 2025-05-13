@@ -15,7 +15,7 @@ public class ToolBarController {
     // buttons to take user to different pages //
     @FXML private Button MainScreen;
     @FXML private Button Settings;
-    @FXML private Button Announcements;
+    @FXML private Button Calendar;
     @FXML private Button Tasks;
 
     // takes user to main screen
@@ -40,8 +40,8 @@ public class ToolBarController {
 
     // takes user to calendar page
     @FXML
-    protected void onAnnouncementsClick() throws IOException {
-        Stage stage = (Stage) Announcements.getScene().getWindow();
+    protected void onCalendarClick() throws IOException {
+        Stage stage = (Stage) Calendar.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/calendar-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
@@ -68,6 +68,3 @@ public class ToolBarController {
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
     }
 }
-
-
-// java.awt.Desktop.getDesktop().browse(theURI);
