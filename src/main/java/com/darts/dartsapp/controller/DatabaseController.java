@@ -7,12 +7,14 @@ public class DatabaseController {
     private ClassTable classes;
     private AssignmentsTable assignments;
     private ClassTimeSlotTable timeSlots;
+    private Settings settings
 
     public DatabaseController () {
         this.users = new UserTable();
         this.classes = new ClassTable();
         this.assignments = new AssignmentsTable();
         this.timeSlots = new ClassTimeSlotTable();
+        this.settings = new SettingsTable()
 
     }
 
@@ -20,4 +22,5 @@ public class DatabaseController {
     public ClassTable classTable() { return classes; }
     public AssignmentsTable assignmentsTable() { return assignments; }
     public ClassTimeSlotTable timeSlotsTable() { return timeSlots; }
+    public SettingsTable settings() { return settings; }
 }
