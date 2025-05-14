@@ -24,7 +24,7 @@ public class SettingsTable {
                     + "userID INTEGER NOT NULL,"
                     + "theme VARCHAR DEFAULT 'Light',"
                     + "dateFormat VARCHAR DEFAULT 'dd/mm/yyyy',"
-                    + "timeFormat VARCHAR DEFAULT '12'"
+                    + "timeFormat VARCHAR DEFAULT '12',"
                     + "FOREIGN KEY (userID) REFERENCES Users(id)"
                     + ")";
             statement.execute(query);

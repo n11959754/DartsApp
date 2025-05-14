@@ -23,9 +23,9 @@ public class ClassTimeSlotTable {
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "classID INTEGER NOT NULL,"
                     + "time VARCHAR NOT NULL,"
-                    + "day VARCHAR NOT NULL"
+                    + "day VARCHAR NOT NULL,"
                     + "type VARCHAR NOT NULL,"
-                    + "colour VARCHAR DEFAULT '#ffffff'"
+                    + "colour VARCHAR DEFAULT '#ffffff',"
                     + "FOREIGN KEY (classID) REFERENCES Class(id)"
                     + ")";
             statement.execute(query);

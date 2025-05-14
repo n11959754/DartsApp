@@ -24,8 +24,8 @@ public class AssignmentsTable {
                     + "classID INTEGER NOT NULL,"
                     + "time VARCHAR NOT NULL,"
                     + "weight INTEGER NOT NULL,"
-                    + "type VARCHAR NOT NULL"
-                    + "colour INTEGER DEFAULT '#ffffff'"
+                    + "type VARCHAR NOT NULL,"
+                    + "colour VARCHAR DEFAULT '#ffffff',"
                     + "FOREIGN KEY (classID) REFERENCES Class(id)"
                     + ")";
             statement.execute(query);
