@@ -22,8 +22,10 @@ public class ClassTimeSlotTable {
             String query = "CREATE TABLE IF NOT EXISTS TimeSlots ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "classID INTEGER NOT NULL,"
-                    + "lectureTime VARCHAR NOT NULL,"
-                    + "tutTime VARCHAR NOT NULL,"
+                    + "time VARCHAR NOT NULL,"
+                    + "day VARCHAR NOT NULL"
+                    + "type VARCHAR NOT NULL,"
+                    + "colour VARCHAR DEFAULT '#ffffff'"
                     + "FOREIGN KEY (classID) REFERENCES Class(id)"
                     + ")";
             statement.execute(query);
@@ -34,10 +36,11 @@ public class ClassTimeSlotTable {
 
     public void createClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO TimeSlots (classID, lectureTime, tutTime) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO TimeSlots (classID, time, day, type) VALUES (?, ?, ?, ?)");
             statement.setInt(1, timeSlot.getClassID());
-            statement.setString(2, timeSlot.getLectureTime());
-            statement.setString(3, timeSlot.getTutTime());
+            statement.setString(2, timeSlot.getTime());
+            statement.setString(3, timeSlot.getDay());
+            statement.setString(4, timeSlot.getType());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,11 +50,13 @@ public class ClassTimeSlotTable {
 
     public void updateClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE TimeSlots SET classID = ?, lectureTime = ?, tutTime = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE TimeSlots SET classID = ?, time = ?, day = ?, type = ?, colour = ? WHERE id = ?");
             statement.setInt(1, timeSlot.getClassID());
-            statement.setString(2, timeSlot.getLectureTime());
-            statement.setString(3, timeSlot.getTutTime());
-            statement.setInt(4, timeSlot.getTimeSlotID());
+            statement.setString(2, timeSlot.getTime());
+            statement.setString(3, timeSlot.getDay());
+            statement.setString(4, timeSlot.getType());
+            statement.setString(5, timeSlot.getColour());
+            statement.setInt(6, timeSlot.getTimeSlotID());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,10 +81,13 @@ public class ClassTimeSlotTable {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 int classID = resultSet.getInt("classID");
-                String lectureTime = resultSet.getString("lectureTime");
-                String tutTime = resultSet.getString("tutTime");
-                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, lectureTime, tutTime);
+                String time = resultSet.getString("time");
+                String type= resultSet.getString("type");
+                String day = resultSet.getString("day");
+                String colour = resultSet.getString("colour");
+                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, time, day, type);
                 timeSlot.setTimeSlotID(id);
+                timeSlot.setColour(colour);
                 return timeSlot;
             }
 
@@ -97,10 +105,13 @@ public class ClassTimeSlotTable {
             while(resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int classID = resultSet.getInt("classID");
-                String lectureTime = resultSet.getString("lectureTime");
-                String tutTime = resultSet.getString("tutTime");
-                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, lectureTime, tutTime);
+                String time = resultSet.getString("time");
+                String type= resultSet.getString("type");
+                String day = resultSet.getString("day");
+                String colour = resultSet.getString("colour");
+                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, time, day, type);
                 timeSlot.setTimeSlotID(id);
+                timeSlot.setColour(colour);
                 timeSlots.add(timeSlot);
             }
 

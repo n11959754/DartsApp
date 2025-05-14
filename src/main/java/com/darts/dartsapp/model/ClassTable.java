@@ -23,9 +23,6 @@ public class ClassTable {
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "userID INTEGER NOT NULL,"
                     + "className VARCHAR NOT NULL,"
-                    + "classColour VARCHAR DEFAULT '#ffffff',"
-                    + "examColour VARCHAR DEFAULT '#ffffff',"
-                    + "assignmentColour VARCHAR DEFAULT '#ffffff',"
                     + "FOREIGN KEY (userID) REFERENCES Users(id)"
                     + ")";
             statement.execute(query);
@@ -48,13 +45,10 @@ public class ClassTable {
 
     public void updateClass(Class classes) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Class SET userID = ?, className = ?, classColour = ?, examColour = ?, assignmentColour = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE Class SET userID = ?, className = ?, WHERE id = ?");
             statement.setInt(1, classes.getUserID());
             statement.setString(2, classes.getClassName());
-            statement.setString(3, classes.getClassColour());
-            statement.setString(4, classes.getExamColour());
-            statement.setString(5, classes.getAssignmentColour());
-            statement.setInt(6, classes.getClassID());
+            statement.setInt(3, classes.getClassID());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,14 +74,8 @@ public class ClassTable {
             if (resultSet.next()) {
                 int userID = resultSet.getInt("userID");
                 String className = resultSet.getString("className");
-                String classColour = resultSet.getString("classColour");
-                String examColour = resultSet.getString("examColour");
-                String assignmentColour = resultSet.getString("assignmentColour");
                 Class classes = new Class(userID, className);
                 classes.setID(id);
-                classes.setClassColour(classColour);
-                classes.setExamColour(examColour);
-                classes.setAssignmentColour(assignmentColour);
                 return classes;
             }
 
@@ -106,14 +94,8 @@ public class ClassTable {
                 int id = resultSet.getInt("id");
                 int userID = resultSet.getInt("userID");
                 String className = resultSet.getString("className");
-                String classColour = resultSet.getString("classColour");
-                String examColour = resultSet.getString("examColour");
-                String assignmentColour = resultSet.getString("assignmentColour");
                 Class cls = new Class(userID, className);
                 cls.setID(id);
-                cls.setClassColour(classColour);
-                cls.setExamColour(examColour);
-                cls.setAssignmentColour(assignmentColour);
                 classes.add(cls);
             }
 
