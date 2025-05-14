@@ -24,6 +24,8 @@ public class AssignmentsTable {
                     + "classID INTEGER NOT NULL,"
                     + "time VARCHAR NOT NULL,"
                     + "weight INTEGER NOT NULL,"
+                    + "type VARCHAR NOT NULL"
+                    + "colour INTEGER DEFAULT '#ffffff'"
                     + "FOREIGN KEY (classID) REFERENCES Class(id)"
                     + ")";
             statement.execute(query);
@@ -34,10 +36,11 @@ public class AssignmentsTable {
 
     public void createAssignment(Assignments assignment) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Assignments (classID, time, weight) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Assignments (classID, time, weight, type) VALUES (?, ?, ?, ?)");
             statement.setInt(1, assignment.getClassID());
             statement.setString(2, assignment.getTime());
             statement.setInt(3, assignment.getWeight());
+            statement.setString(4, assignment.getType());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,11 +50,13 @@ public class AssignmentsTable {
 
     public void updateAssignment(Assignments assignment) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Assignments SET classID = ?, time = ?, weight = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE Assignments SET classID = ?, time = ?, weight = ?, type = ?, colour=? WHERE id = ?");
             statement.setInt(1, assignment.getClassID());
             statement.setString(2, assignment.getTime());
             statement.setInt(3, assignment.getWeight());
-            statement.setInt(4, assignment.getAssignmentID());
+            statement.setString(4, assignment.getType());
+            statement.setString(5, assignment.getColour());
+            statement.setInt(6, assignment.getAssignmentID());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +83,8 @@ public class AssignmentsTable {
                 int classID = resultSet.getInt("classID");
                 String time = resultSet.getString("lectureTime");
                 int weight = resultSet.getInt("weight");
-                Assignments assignment = new Assignments(classID, time, weight);
+                String type = resultSet.getString("type");
+                Assignments assignment = new Assignments(classID, time, weight, type);
                 assignment.setAssignmentID(id);
                 return assignment;
             }
@@ -92,14 +98,15 @@ public class AssignmentsTable {
     public List<Assignments> getAllAssignments() {
         List<Assignments> assignments = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments");
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int classID = resultSet.getInt("classID");
                 String time = resultSet.getString("time");
                 int weight = resultSet.getInt("weight");
-                Assignments assignment = new Assignments(classID, time, weight);
+                String type = resultSet.getString("type");
+                Assignments assignment = new Assignments(classID, time, weight, type);
                 assignment.setAssignmentID(id);
                 assignments.add(assignment);
             }

@@ -9,7 +9,7 @@ public class SqlConnect {
     private static Connection instance = null;
 
     private SqlConnect() {
-        String url = "jdbc:sqlite:contacts.db";
+        String url = "jdbc:sqlite:study.db";
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
