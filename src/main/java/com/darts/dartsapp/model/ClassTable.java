@@ -104,4 +104,48 @@ public class ClassTable {
         }
         return classes;
     }
+
+    public List<Units> getUnits(int id) {
+        List<Units> units = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT " +
+                    "c.id AS classID," +
+                    "c.className," +
+                    "t.id AS timeSlotID," +
+                    "t.time AS timeSlotTime," +
+                    "t.day," +
+                    "t.type AS timeSlotType," +
+                    "t.colour AS timeSlotColour," +
+                    "a.id AS assignmentID," +
+                    "a.time AS assignmentTime," +
+                    "a.weight," +
+                    "a.type AS assignmentType," +
+                    "a.colour AS assignmentColour" +
+                    "FROM Class c" +
+                    "LEFT JOIN TimeSlots t ON t.classID = c.id" +
+                    "LEFT JOIN Assignments a ON a.classID = c.id" +
+                    "WHERE c.userID = ?;");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int classID = resultSet.getInt("c.id");
+                String className = resultSet.getString("c.className");
+                int timeSlotID = resultSet.getInt("t.id");
+                String time = resultSet.getString("t.time");
+                String day = resultSet.getString("t.day");
+                String timeSlotType = resultSet.getString("t.type");
+                String timeSlotColour = resultSet.getString("t.colour");
+                int assignmentID = resultSet.getInt("a.id");
+                String assignmentTime = resultSet.getString("a.time");
+                int weight = resultSet.getInt("a.weight");
+                String assignmentType = resultSet.getString("a.type");
+                String assignmentColour = resultSet.getString("a.colour");
+                Units unit = new Units(classID, className, timeSlotID, time, day, timeSlotType, timeSlotColour, assignmentID,assignmentTime, weight, assignmentType, assignmentColour);
+                units.add(unit);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return units;
+    }
 }
