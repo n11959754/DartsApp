@@ -67,7 +67,7 @@ public class LoginController {
     protected void onButtonLoginClick() throws IOException {
 
         db = new DatabaseController();
-        User user = db.usersTable().getUser(UsernameField.getText());
+        User user = db.getUsersTable().getUser(UsernameField.getText());
         if (user != null && user.getPassword().equals(PasswordField.getText())) {
             Session.setCurrentUser(user);
             Stage stage = (Stage) SignUpButton.getScene().getWindow();

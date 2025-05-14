@@ -1,26 +1,41 @@
 package com.darts.dartsapp.controller;
+
 import com.darts.dartsapp.model.*;
 
 public class DatabaseController {
 
-    private UserTable users;
-    private ClassTable classes;
-    private AssignmentsTable assignments;
-    private ClassTimeSlotTable timeSlots;
-    private SettingsTable settings;
+    private final UserTable users;
+    private final ClassTable classes;
+    private final AssignmentsTable assignments;
+    private final ClassTimeSlotTable timeSlots;
+    private final SettingsTable settings;
 
-    public DatabaseController () {
+    public DatabaseController() {
         this.users = new UserTable();
         this.classes = new ClassTable();
         this.assignments = new AssignmentsTable();
         this.timeSlots = new ClassTimeSlotTable();
         this.settings = new SettingsTable();
-
     }
 
-    public UserTable usersTable() { return users; }
-    public ClassTable classTable() { return classes; }
-    public AssignmentsTable assignmentsTable() { return assignments; }
-    public ClassTimeSlotTable timeSlotsTable() { return timeSlots; }
-    public SettingsTable settingsTable() { return settings; }
+    // Getter methods with corrected naming convention
+    public UserTable getUsersTable() {
+        return users;
+    }
+
+    public ClassTable getClassTable() {
+        return classes;
+    }
+
+    public AssignmentsTable getAssignmentsTable() {
+        return assignments;
+    }
+
+    public ClassTimeSlotTable getTimeSlotsTable() {
+        return timeSlots;
+    }
+
+    public SettingsTable getSettingsTable() {
+        return settings;
+    }
 }

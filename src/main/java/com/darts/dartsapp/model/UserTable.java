@@ -1,15 +1,13 @@
 package com.darts.dartsapp.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserTable {
 
-    private Connection connection;
+    private final Connection connection;
 
     public UserTable() {
         connection = SqlConnect.getInstance();
@@ -17,14 +15,14 @@ public class UserTable {
     }
 
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS Users ("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "userName VARCHAR NOT NULL,"
-                    + "email VARCHAR NOT NULL,"
-                    + "phone VARCHAR NOT NULL,"
-                    + "password VARCHAR NOT NULL"
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "userName VARCHAR NOT NULL, "
+                    + "email VARCHAR NOT NULL, "
+                    + "phone VARCHAR NOT NULL, "
+                    + "password VARCHAR NOT NULL, "
+                    + "dob TEXT"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -33,47 +31,56 @@ public class UserTable {
     }
 
     public void createUser(User user) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Users (userName, email, phone, password) VALUES (?, ?, ?, ?)");
+        try (PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO Users (userName, email, phone, password, dob) VALUES (?, ?, ?, ?, ?)")) {
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
             statement.setString(4, user.getPassword());
+            if (user.getBirthday() != null) {
+                statement.setString(5, user.getBirthday().toString());
+            } else {
+                statement.setNull(5, Types.VARCHAR);
+            }
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void updateUser(User user) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Users SET userName = ?, email = ?, phone = ?, password = ? WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement(
+                "UPDATE Users SET userName = ?, email = ?, phone = ?, password = ?, dob = ? WHERE id = ?")) {
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
             statement.setString(4, user.getPassword());
-            statement.setInt(5, user.getUserID());
+            if (user.getBirthday() != null) {
+                statement.setString(5, user.getBirthday().toString());
+            } else {
+                statement.setNull(5, Types.VARCHAR);
+            }
+            statement.setInt(6, user.getUserID());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteUser(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM Users WHERE id = ?");
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (Exception e) {
+    public boolean deleteUser(int userId) {
+        String sql = "DELETE FROM Users WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
     }
 
     public User getUser(String userName) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE userName = ?");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE userName = ?")) {
             statement.setString(1, userName);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -81,11 +88,13 @@ public class UserTable {
                 String email = resultSet.getString("email");
                 String phoneNumber = resultSet.getString("phone");
                 String password = resultSet.getString("password");
-                User user = new User(userName, email, phoneNumber, password);
+                String dobStr = resultSet.getString("dob");
+                LocalDate dob = (dobStr != null) ? LocalDate.parse(dobStr) : null;
+
+                User user = new User(userName, email, phoneNumber, password, dob);
                 user.setUserID(id);
                 return user;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,23 +103,25 @@ public class UserTable {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users")) {
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String userName = resultSet.getString("userName");
                 String email = resultSet.getString("email");
                 String phoneNumber = resultSet.getString("phone");
                 String password = resultSet.getString("password");
-                User user = new User(userName, email, phoneNumber, password);
+                String dobStr = resultSet.getString("dob");
+                LocalDate dob = (dobStr != null) ? LocalDate.parse(dobStr) : null;
+
+                User user = new User(userName, email, phoneNumber, password, dob);
                 user.setUserID(id);
                 users.add(user);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return users;
     }
 }
+2
