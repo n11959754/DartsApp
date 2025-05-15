@@ -31,13 +31,13 @@ public class UserTest {
 
     @Test
     public void testGetUserName() {
-        assertEquals(USER_NAME, user.getUsername());
+        assertEquals(USER_NAME, user.getUserName());
     }
 
     @Test
     public void testSetUserName() {
-        user.setUsername(USER_NAME_TWO);
-        assertEquals(USER_NAME_TWO, user.getUsername());
+        user.setUserName(USER_NAME_TWO);
+        assertEquals(USER_NAME_TWO, user.getUserName());
     }
 
     @Test
