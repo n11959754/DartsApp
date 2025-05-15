@@ -113,9 +113,8 @@ public class SignUpController {
 
         DatabaseController db = new DatabaseController();
         User user = new User(UsernameField.getText(), EmailField.getText(), PhoneField.getText(), PasswordField.getText());
-        db.getUsersTable().createUser(user);
-        User settings = db.getUsersTable().getUser(user.getUserName());
-        db.getSettingsTable().createSettings(settings.getUserID());
+        int userID = db.getUsersTable().createUser(user);
+        db.getSettingsTable().createSettings(userID);
         Stage stage = (Stage) BackButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/LandingPage-view.fxml"));
 

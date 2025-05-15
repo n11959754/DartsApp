@@ -30,22 +30,26 @@ public class UserTable {
         }
     }
 
-    public void createUser(User user) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO Users (userName, email, phone, password, dob) VALUES (?, ?, ?, ?, ?)")) {
+    public int createUser(User user) {
+        try {
+            String sql = "INSERT INTO Users (userName, email, phone, password) VALUES (?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
             statement.setString(4, user.getPassword());
-            if (user.getBirthday() != null) {
-                statement.setString(5, user.getBirthday().toString());
-            } else {
-                statement.setNull(5, Types.VARCHAR);
-            }
             statement.executeUpdate();
+
+            ResultSet keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                int userID = keys.getInt(1);
+                user.setUserID(userID); // Set it on the object
+                return userID;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public void updateUser(User user) {
