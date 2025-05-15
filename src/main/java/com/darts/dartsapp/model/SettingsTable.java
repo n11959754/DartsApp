@@ -33,10 +33,10 @@ public class SettingsTable {
         }
     }
 
-    public void createSettings(Settings settings) {
+    public void createSettings(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Settings (userID) VALUES (?)");
-            statement.setInt(1, settings.getUserID());
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
