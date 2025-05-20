@@ -11,11 +11,12 @@ public class Units {
     private String classColour;
     private int assignmentID;
     private String assignmentTime;
+    private String assignmentDay;
     private int weight;
     private String assignmentType;
     private String assignmentColour;
 
-    public Units(int classID, String className, int timeSlotID, String time, String day, String classType, String classColour, int assignmentID, String assignmentTime, int weight, String assignmentType, String assignmentColour) {
+    public Units(int classID, String className, int timeSlotID, String time, String day, String classType, String classColour, int assignmentID, String assignmentTime, String assignmentDay, int weight, String assignmentType, String assignmentColour) {
         this.classID = classID;
         this.className = className;
         this.timeSlotID = timeSlotID;
@@ -25,6 +26,7 @@ public class Units {
         this.classColour = classColour;
         this.assignmentID = assignmentID;
         this.assignmentTime = assignmentTime;
+        this.assignmentDay = assignmentDay;
         this.weight = weight;
         this.assignmentType = assignmentType;
         this.assignmentColour = assignmentColour;
@@ -47,6 +49,8 @@ public class Units {
     public int getAssignmentID() {return assignmentID;}
 
     public String getAssignmentTime() {return assignmentTime;}
+
+    public String getAssignmentDay() {return assignmentDay;}
 
     public int getWeight() {return weight;}
 

@@ -118,7 +118,8 @@ public class ClassTable {
                     "t.colour AS timeSlotColour," +
                     "a.id AS assignmentID," +
                     "a.time AS assignmentTime," +
-                    "a.weight," +
+                    "a.day AS assignmentDay," +
+                    "a.weight AS assignmentWeight," +
                     "a.type AS assignmentType," +
                     "a.colour AS assignmentColour" +
                     "FROM Class c" +
@@ -137,10 +138,11 @@ public class ClassTable {
                 String timeSlotColour = resultSet.getString("t.colour");
                 int assignmentID = resultSet.getInt("a.id");
                 String assignmentTime = resultSet.getString("a.time");
+                String assignmentDay = resultSet.getString("a.day");
                 int weight = resultSet.getInt("a.weight");
                 String assignmentType = resultSet.getString("a.type");
                 String assignmentColour = resultSet.getString("a.colour");
-                Units unit = new Units(classID, className, timeSlotID, time, day, timeSlotType, timeSlotColour, assignmentID,assignmentTime, weight, assignmentType, assignmentColour);
+                Units unit = new Units(classID, className, timeSlotID, time, day, timeSlotType, timeSlotColour, assignmentID,assignmentTime, assignmentDay, weight, assignmentType, assignmentColour);
                 units.add(unit);
             }
         } catch(Exception e) {

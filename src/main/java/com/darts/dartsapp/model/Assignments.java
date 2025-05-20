@@ -5,14 +5,16 @@ public class Assignments {
     private int assignmentID;
     private int classID;
     private String time;
+    private String day;
     private int weight;
     private String type;
     private String colour;
 
 
-    public Assignments(int classID, String time, int weight,  String type) {
+    public Assignments(int classID, String time, String day, int weight, String type) {
         this.classID = classID;
         this.time = time;
+        this.day = day;
         this.weight = weight;
         this.type = type;
     }
@@ -24,6 +26,8 @@ public class Assignments {
     public int getClassID() { return classID; }
 
     public String getTime() { return time; }
+
+    public String getDay() { return day; }
 
     public int getWeight() { return weight; }
 
