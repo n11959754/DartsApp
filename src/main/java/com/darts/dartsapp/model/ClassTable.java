@@ -45,7 +45,7 @@ public class ClassTable {
 
     public void updateClass(Class classes) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Class SET userID = ?, className = ?, WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE Class SET userID = ?, className = ? WHERE id = ?");
             statement.setInt(1, classes.getUserID());
             statement.setString(2, classes.getClassName());
             statement.setInt(3, classes.getClassID());
@@ -149,5 +149,25 @@ public class ClassTable {
             e.printStackTrace();
         }
         return units;
+    }
+
+    public List<Class> getClassesByUser(int userId) {
+        List<Class> classes = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Class WHERE userID = ?");
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userID = resultSet.getInt("userID");
+                String className = resultSet.getString("className");
+                Class cls = new Class(userID, className);
+                cls.setID(id);
+                classes.add(cls);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classes;
     }
 }

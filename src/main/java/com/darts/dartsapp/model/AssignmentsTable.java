@@ -121,4 +121,29 @@ public class AssignmentsTable {
         }
         return assignments;
     }
+
+    public List<Assignments> getAssignmentsByClassID(int classId) {
+        List<Assignments> assignments = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments WHERE classID = ?");
+            statement.setInt(1, classId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Assignments assignment = new Assignments(
+                        resultSet.getInt("classID"),
+                        resultSet.getString("time"),
+                        resultSet.getString("day"),
+                        resultSet.getInt("weight"),
+                        resultSet.getString("type")
+                );
+                assignment.setAssignmentID(resultSet.getInt("id"));
+                assignment.setColour(resultSet.getString("colour"));
+                assignments.add(assignment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return assignments;
+    }
+
 }

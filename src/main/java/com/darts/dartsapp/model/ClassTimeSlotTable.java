@@ -120,4 +120,27 @@ public class ClassTimeSlotTable {
         }
         return timeSlots;
     }
+
+    public List<ClassTimeSlot> getTimeSlotsByClassID(int classId) {
+        List<ClassTimeSlot> slots = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots WHERE classID = ?");
+            statement.setInt(1, classId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ClassTimeSlot slot = new ClassTimeSlot(
+                        resultSet.getInt("classID"),
+                        resultSet.getString("time"),
+                        resultSet.getString("day"),
+                        resultSet.getString("type")
+                );
+                slot.setTimeSlotID(resultSet.getInt("id"));
+                slot.setColour(resultSet.getString("colour"));
+                slots.add(slot);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return slots;
+    }
 }
