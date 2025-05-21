@@ -74,7 +74,7 @@ public class SignUpController {
         if (!email.contains("@") || !email.contains(".")) {
             return "Entered email is invalid.";
         }
-        // if phone isn't valid
+        // if phone isn't valid.
         if (phone.length() != 10) {
             return "Entered phone number is invalid.";
         }
