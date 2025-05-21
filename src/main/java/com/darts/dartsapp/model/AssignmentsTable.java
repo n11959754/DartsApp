@@ -23,7 +23,7 @@ public class AssignmentsTable {
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "classID INTEGER NOT NULL,"
                     + "time VARCHAR NOT NULL,"
-                    + "day DATE NOT NULL"
+                    + "day DATE NOT NULL,"
                     + "weight INTEGER NOT NULL,"
                     + "type VARCHAR NOT NULL,"
                     + "colour VARCHAR DEFAULT '#ffffff',"
