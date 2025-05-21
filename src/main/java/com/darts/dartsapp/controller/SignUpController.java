@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import com.darts.dartsapp.util.PasswordAuthentication;
+
 
 import java.io.IOException;
 
@@ -97,6 +99,7 @@ public class SignUpController {
         String username = UsernameField.getText();
         String email = EmailField.getText();
         String phone = PhoneField.getText();
+        String rawPassword = PasswordField.isVisible() ? PasswordField.getText() : VisiblePasswordField.getText();
         String password = PasswordField.getText();
 
         String SignUpError = ValidateSignUp(username, email, phone, password);
@@ -109,10 +112,11 @@ public class SignUpController {
             return;
         }
 
-
+        PasswordAuthentication auth = new PasswordAuthentication();
+        String hashedPassword = auth.hash(rawPassword.toCharArray());
 
         DatabaseController db = new DatabaseController();
-        User user = new User(UsernameField.getText(), EmailField.getText(), PhoneField.getText(), PasswordField.getText());
+        User user = new User(username, email, phone, hashedPassword);
         int userID = db.getUsersTable().createUser(user);
         db.getSettingsTable().createSettings(userID);
         Stage stage = (Stage) BackButton.getScene().getWindow();

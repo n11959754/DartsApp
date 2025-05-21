@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import com.darts.dartsapp.util.PasswordAuthentication;
+
 
 import java.io.IOException;
 
@@ -63,24 +65,41 @@ public class LoginController {
         stage.setScene(scene);
     }
 
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login Failed");
+        alert.setHeaderText(message);
+        alert.showAndWait();
+    }
+
+
     @FXML
     protected void onButtonLoginClick() throws IOException {
 
         db = new DatabaseController();
         User user = db.getUsersTable().getUser(UsernameField.getText());
-        if (user != null && user.getPassword().equals(PasswordField.getText())) {
+
+        if (user==null) {
+            showError("Username or Password is incorrect.");
+        }
+
+        // Comparing stored hash password value to entered password
+        String storedHash = user.getPassword();
+        String enteredPassword = PasswordToggle.isSelected()
+                ? VisiblePasswordField.getText()
+                : PasswordField.getText();
+        PasswordAuthentication auth = new PasswordAuthentication();
+        boolean authenticated = auth.authenticate(enteredPassword.toCharArray(), storedHash);
+
+        if (authenticated) {
             Session.setCurrentUser(user);
             Stage stage = (Stage) SignUpButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
-
             Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
             stage.setScene(scene);
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Failed");
-            alert.setHeaderText("Username or Password is incorrect.");
-            alert.showAndWait();
+            showError("Username or Password is incorrect.");
         }
 
 
