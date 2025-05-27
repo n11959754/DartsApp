@@ -1,14 +1,16 @@
 package com.darts.dartsapp.controller.calendar;
 
 import com.darts.dartsapp.model.ClassTable;
-import com.darts.dartsapp.model.ClassTimeSlot; // Import the ClassTimeSlot model
+import com.darts.dartsapp.model.ClassTimeSlot;
 import com.darts.dartsapp.model.ClassTimeSlotTable;
-import com.darts.dartsapp.model.Session;
+import com.darts.dartsapp.model.Session; // Assuming Session and User model for fetching user-specific classes
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -23,10 +25,11 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator; // Added for sorting events
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CalendarController {
 
@@ -34,53 +37,68 @@ public class CalendarController {
     @FXML private Label monthYearLabel;
     @FXML private GridPane calendarGrid;
 
-    // styles for the calendar cells //blue: 2F638F
+    // styles for the calendar cells
     private static final String DATE_CELL_STYLE = "-fx-background-color: #dae3eb; -fx-border-color: #B0BEC5; -fx-border-width: 1px;";
     private static final String EMPTY_CELL_STYLE = "-fx-background-color: #ECEFF1; -fx-border-color: #B0BEC5; -fx-border-width: 1px;";
-    private static final String SELECTED_CELL_STYLE = "-fx-background-color: #2F638F; -fx-border-color: #0288D1; -fx-border-width: 1px;";
+    private static final String SELECTED_CELL_STYLE = "-fx-background-color: #ECEFF1; -fx-border-color: #0288D1; -fx-border-width: 1px;";
 
     // controller state
     private YearMonth currentYearMonth;
     private Node currentlySelectedCell = null;
-    private final DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+    private final DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy"); // Corrected pattern
 
     // class data structure
     private static class Event {
         String time;
         String name;
         String style;
+        int timeSlotId; // Corresponds to 'id' column in TimeSlots table
 
-        public Event(String time, String name, String style) {
+        public Event(String time, String name, String style, int timeSlotId) {
             this.time = time;
             this.name = name;
             this.style = style;
+            this.timeSlotId = timeSlotId;
+        }
+
+        public int getTimeSlotId() {
+            return timeSlotId;
         }
     }
     private final Map<DayOfWeek, List<Event>> weeklyEvents = new HashMap<>();
+    private ClassTimeSlotTable timeSlotTable; // Instance of ClassTimeSlotTable
 
     // starts the controller class
     @FXML
     public void initialize() {
         currentYearMonth = YearMonth.now();
+        timeSlotTable = new ClassTimeSlotTable(); // Initialize here
         loadWeeklyEvents();
         drawCalendar();
     }
 
-    // database interaction for classes //
+    // database interaction for classes
     private List<ClassTimeSlot> fetchClassTimeSlotsFromDB() {
         List<ClassTimeSlot> allSlots = new ArrayList<>();
 
-        if (!Session.isLoggedIn()) return allSlots;
+        // Assuming Session management for user context
+        if (Session.isLoggedIn() && Session.getCurrentUser() != null) {
+            int userID = Session.getCurrentUser().getUserID(); // Assuming User model has getUserID()
+            ClassTable classTable = new ClassTable(); // Consider injecting or making a service
 
-        int userID = Session.getCurrentUser().getUserID();
-        ClassTable classTable = new ClassTable();
-        ClassTimeSlotTable timeSlotTable = new ClassTimeSlotTable();
-        List<com.darts.dartsapp.model.Class> userClasses = classTable.getClassesByUser(userID);
+            // Get all classes associated with the user
+            List<com.darts.dartsapp.model.Class> userClasses = classTable.getClassesByUser(userID);
 
-        for (com.darts.dartsapp.model.Class userClass : userClasses) {
-            int classID = userClass.getClassID();
-            List<ClassTimeSlot> timeSlots = timeSlotTable.getTimeSlotsByClassID(classID);
-            allSlots.addAll(timeSlots);
+            for (com.darts.dartsapp.model.Class userClass : userClasses) {
+                // For each class, get its scheduled time slots
+                List<ClassTimeSlot> slotsForClass = timeSlotTable.getTimeSlotsByClassID(userClass.getClassID());
+                allSlots.addAll(slotsForClass);
+            }
+        } else {
+            // If no user is logged in, or for a general calendar view, you might fetch all slots
+            // For now, returning empty if not logged in to maintain user-specific view
+            // return timeSlotTable.getAllClassTimeSlots(); // Uncomment for all slots if needed
+            System.out.println("User not logged in or no current user, no classes loaded.");
         }
         return allSlots;
     }
@@ -96,14 +114,14 @@ public class CalendarController {
         }
     }
 
+    // text color
     private String determineTextColor(String backgroundColorHex) {
         if (backgroundColorHex == null || !backgroundColorHex.startsWith("#") ||
-                (backgroundColorHex.length() != 7 && backgroundColorHex.length() != 9)) { // either #RRGGBB and or #RRGGBBAA
+                (backgroundColorHex.length() != 7 && backgroundColorHex.length() != 9)) {
             return "black";
         }
         try {
             Color color = Color.web(backgroundColorHex);
-            // 0.299*R + 0.587*G + 0.114*B (values are 0-1)
             double luminance = (0.299 * color.getRed() + 0.587 * color.getGreen() + 0.114 * color.getBlue());
             return luminance > 0.5 ? "black" : "white";
         } catch (Exception e) {
@@ -114,25 +132,24 @@ public class CalendarController {
 
     // classes logic
     private void loadWeeklyEvents() {
-        weeklyEvents.clear(); // clear any existing events
+        weeklyEvents.clear();
         List<ClassTimeSlot> classSlots = fetchClassTimeSlotsFromDB();
 
         for (ClassTimeSlot slot : classSlots) {
             DayOfWeek dayOfWeek = mapStringToDayOfWeek(slot.getDay());
             if (dayOfWeek == null) {
-                System.err.println("Warning: Could not parse day: '" + slot.getDay() + "' for classID: " + slot.getClassID());
-                continue; // skip the slot if day is invalid
+                System.err.println("Warning: Could not parse day: '" + slot.getDay() + "' for classID: " + slot.getClassID() + ", timeSlotID: " + slot.getTimeSlotID());
+                continue;
             }
-            String eventName = "ID:" + slot.getClassID() + " (" + slot.getType() + ")";
-            String slotColour = slot.getColour() != null ? slot.getColour() : "#CCCCCC";
+            String eventName = slot.getType(); // Using type as the event name
+            String slotColour = slot.getColour() != null ? slot.getColour() : "#CCCCCC"; // Default color
             String textColor = determineTextColor(slotColour);
             String eventStyle = "-fx-background-color: " + slotColour + "; -fx-text-fill: " + textColor + ";";
 
             weeklyEvents.computeIfAbsent(dayOfWeek, k -> new ArrayList<>())
-                    .add(new Event(slot.getTime(), eventName, eventStyle));
+                    .add(new Event(slot.getTime(), eventName, eventStyle, slot.getTimeSlotID()));
         }
 
-        // sort events by time for each day
         for (List<Event> eventsOnDay : weeklyEvents.values()) {
             eventsOnDay.sort(Comparator.comparing(e -> e.time));
         }
@@ -150,6 +167,7 @@ public class CalendarController {
     private void handleNextMonth(@SuppressWarnings("unused") ActionEvent event) {
         currentYearMonth = currentYearMonth.plusMonths(1);
         clearSelection();
+        // loadWeeklyEvents(); // uncomment if the classes change dynamically per month idk
         drawCalendar();
     }
 
@@ -158,21 +176,21 @@ public class CalendarController {
         populateCalendarGrid();
     }
 
+    // creates the calendar group
     private void populateCalendarGrid() {
         if (calendarGrid == null) {
-            System.err.println("Error: calendarGrid is null in populateCalendarGrid. Cannot draw calendar.");
+            System.err.println("Error: calendarGrid is null cannot draw calendar.");
             return;
         }
-        // clears previous months cells
         calendarGrid.getChildren().removeIf(node -> GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0);
         LocalDate firstOfMonth = currentYearMonth.atDay(1);
-        int dayOfWeekOffset = firstOfMonth.getDayOfWeek().getValue() % 7; // Sunday is 0 Monday is 1 etc
+        int dayOfWeekOffset = firstOfMonth.getDayOfWeek().getValue() % 7; // sun=0, mon=1... sat=6
         int daysInMonth = currentYearMonth.lengthOfMonth();
         int currentDay = 1;
 
-        for (int row = 1; row <= 6; row++) { // start from row 1 for dates
+        for (int row = 1; row <= 6; row++) { // starts from row 1 for the dates (row 0 is for the day headers)
             for (int col = 0; col < 7; col++) {
-                if (calendarGrid.getRowCount() <= row) break;
+                if (calendarGrid.getRowCount() <= row) break; // hopefully grid has enough rows
 
                 StackPane cell;
                 if ((row == 1 && col < dayOfWeekOffset) || currentDay > daysInMonth) {
@@ -186,7 +204,8 @@ public class CalendarController {
             }
         }
     }
-    // date cell
+
+    // calendar month date cells
     private StackPane createDateCell(LocalDate date) {
         StackPane cell = new StackPane();
         cell.setOnMouseClicked(this::handleDateCellClick);
@@ -208,8 +227,10 @@ public class CalendarController {
                 eventLabel.setFont(Font.font("System", FontWeight.NORMAL, 9));
                 eventLabel.setPadding(new Insets(1, 3, 1, 3));
                 eventLabel.setStyle(event.style + " -fx-background-radius: 3;");
-                eventLabel.setMaxWidth(Double.MAX_VALUE);
+                eventLabel.setMaxWidth(Double.MAX_VALUE); // labels fills width
                 VBox.setMargin(eventLabel, new Insets(1, 0, 0, 0));
+                eventLabel.setUserData(event);
+                eventLabel.setOnMouseClicked(this::handleClassEventClick);
                 contentBox.getChildren().add(eventLabel);
             }
         }
@@ -217,34 +238,86 @@ public class CalendarController {
         return cell;
     }
 
+    // empty cells also makes them unclickable
     private StackPane createEmptyCell() {
         StackPane cell = new StackPane();
         cell.setPadding(new Insets(5));
-        cell.setMouseTransparent(true); // Not clickable
+        cell.setMouseTransparent(true);
         cell.setStyle(EMPTY_CELL_STYLE);
         return cell;
     }
 
     @FXML
     private void handleDateCellClick(MouseEvent event) {
-        Node clickedNode = (Node) event.getSource();
-        if (!(clickedNode instanceof StackPane)) { return; }
+        Node sourceNode = (Node) event.getSource();
+        StackPane clickedCell = null;
 
-        // reset style of previously selected cell if it's not an empty cell
-        if (currentlySelectedCell != null && currentlySelectedCell != clickedNode) {
+        if (sourceNode instanceof StackPane) {
+            clickedCell = (StackPane) sourceNode;
+        } else if (sourceNode.getParent() instanceof StackPane) {
+            clickedCell = (StackPane) sourceNode.getParent();
+        }
+
+        // won't process clicks if it's on an empty cell
+        if (clickedCell == null || clickedCell.getStyle().equals(EMPTY_CELL_STYLE)) {
+            event.consume();
+            return;
+        }
+
+        if (currentlySelectedCell != null && currentlySelectedCell != clickedCell) {
             if (!currentlySelectedCell.getStyle().equals(EMPTY_CELL_STYLE)) {
                 currentlySelectedCell.setStyle(DATE_CELL_STYLE);
             }
         }
 
-        // applies selected style if it's a date cell
-        if (!clickedNode.getStyle().equals(EMPTY_CELL_STYLE)) {
-            clickedNode.setStyle(SELECTED_CELL_STYLE);
-            currentlySelectedCell = clickedNode;
-        } else {
-            // ff an empty cell clicked and previously was selected clears the selection
-            if (currentlySelectedCell == clickedNode) currentlySelectedCell = null;
+        clickedCell.setStyle(SELECTED_CELL_STYLE);
+        currentlySelectedCell = clickedCell;
+    }
+
+    // allows user to delete a class on click
+    private void handleClassEventClick(MouseEvent event) {
+        Label clickedLabel = (Label) event.getSource();
+        Event eventData = (Event) clickedLabel.getUserData();
+
+        if (eventData != null) {
+            int timeSlotIdToDelete = eventData.getTimeSlotId();
+            String eventDetails = eventData.time + " " + eventData.name;
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setTitle("Confirm Deletion");
+            confirmationDialog.setHeaderText("Delete Class Time Slot?");
+            confirmationDialog.setContentText("Are you sure you want to delete the class: " + eventDetails + "?");
+
+            Optional<ButtonType> result = confirmationDialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    // uses the deleteClassTimeSlot method from ClassTimeSlotTable
+                    timeSlotTable.deleteClassTimeSlot(timeSlotIdToDelete);
+
+                    // shows success dialogue to user
+                    System.out.println("Successfully initiated deletion for time slot ID: " + timeSlotIdToDelete);
+
+                    // redraws the calendar with updated events
+                    loadWeeklyEvents();
+                    drawCalendar();
+                    clearSelection();
+                    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+                    infoAlert.setTitle("Deletion Successful");
+                    infoAlert.setHeaderText(null);
+                    infoAlert.setContentText("The class '" + eventDetails + "' has been deleted.");
+                    infoAlert.showAndWait();
+
+                } catch (Exception e) {
+                    // catches any potential exceptions from the delete operation or ui surface updates
+                    System.err.println("Error during deletion or UI refresh for time slot ID: " + timeSlotIdToDelete);
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Deletion Failed");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Could not delete the class. An unexpected error occurred: " + e.getMessage());
+                    errorAlert.showAndWait();
+                }
+            }
         }
+        event.consume(); // consumeeee
     }
 
     private void clearSelection() {
