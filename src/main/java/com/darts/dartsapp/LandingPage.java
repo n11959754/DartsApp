@@ -15,6 +15,7 @@ public class LandingPage extends Application {
         stage.setTitle("Darts App");
         stage.setScene(scene);
         stage.show();
+
     }
 
     public static void main(String[] args) {

@@ -38,4 +38,5 @@ public class Assignments {
     public void setColour(String colour) {this.colour = colour; }
 
     public String getColour() { return colour; }
+
 }
