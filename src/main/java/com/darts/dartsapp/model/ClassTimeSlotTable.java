@@ -34,18 +34,22 @@ public class ClassTimeSlotTable {
         }
     }
 
+    //  stores colour to SQL and fetches from timeSlot.getColour()
     public void createClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO TimeSlots (classID, time, day, type) VALUES (?, ?, ?, ?)");
+
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO TimeSlots (classID, time, day, type, colour) VALUES (?, ?, ?, ?, ?)"
+            );
             statement.setInt(1, timeSlot.getClassID());
             statement.setString(2, timeSlot.getTime());
             statement.setString(3, timeSlot.getDay());
             statement.setString(4, timeSlot.getType());
+            statement.setString(5, timeSlot.getColour());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void updateClassTimeSlot(ClassTimeSlot timeSlot) {

@@ -6,11 +6,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.Cursor;
+
+
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 public class MainScreenController {
@@ -23,6 +30,7 @@ public class MainScreenController {
     @FXML
     private void initialize() {
         loadWeeklyPreview();
+        loadAssignmentCountdown(assignmentsCountdownVBox);
     }
 
     @FXML
@@ -34,6 +42,9 @@ public class MainScreenController {
     protected void onCalendarClick() {
         loadPage("/com/darts/dartsapp/calendar-view.fxml");
     }
+
+    @FXML private VBox assignmentsCountdownVBox;
+
 
     private void loadPage(String fxmlPath) {
         try {
@@ -56,9 +67,12 @@ public class MainScreenController {
         AssignmentsTable assignmentsTable = new AssignmentsTable();
         ClassTimeSlotTable timeSlotTable = new ClassTimeSlotTable();
 
-        List<Class> userClasses = classTable.getClassesByUser(userID); // Must be implemented
-
+        List<Class> userClasses = classTable.getClassesByUser(userID);
         Map<String, List<Label>> dayContentMap = new HashMap<>();
+
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
 
         for (Class userClass : userClasses) {
             int classID = userClass.getClassID();
@@ -67,24 +81,64 @@ public class MainScreenController {
             List<ClassTimeSlot> timeSlots = timeSlotTable.getTimeSlotsByClassID(classID);
             for (ClassTimeSlot slot : timeSlots) {
                 Label label = new Label(slot.getTime() + " - " + className + " (" + slot.getType() + ")");
+                label.setWrapText(true);
                 label.setMaxWidth(Double.MAX_VALUE);
+                label.setCursor(Cursor.HAND);
                 label.setStyle(
-                                "-fx-background-color:" + slot.getColour() + ";" +
-                                " -fx-text-fill: white;" +
+                        "-fx-background-color:" + slot.getColour() + ";" +
+                                "-fx-text-fill: white;" +
                                 "-fx-padding: 5 10 5 10;" +
-                                "-fx-background-radius: 8;"+
-                                "-fx-font-weight: bold;"+
-                                "fx-font-size: 14px;"
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-font-size: 14px;"
                 );
+                label.setOnMouseEntered(e -> label.setStyle(
+                        label.getStyle() +
+                                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.5, 0, 2);" +
+                                "-fx-scale-x: 1.02;" +
+                                "-fx-scale-y: 1.02;"
+                ));
+                label.setOnMouseExited(e -> label.setStyle(
+                        label.getStyle().replaceAll("-fx-effect: .*?;", "") +
+                                "-fx-scale-x: 1.0;" +
+                                "-fx-scale-y: 1.0;"
+                ));
 
-                dayContentMap.computeIfAbsent(slot.getDay(), k -> new ArrayList<>()).add(label);
+                dayContentMap.computeIfAbsent(slot.getDay().toLowerCase(), k -> new ArrayList<>()).add(label);
             }
 
             List<Assignments> assignments = assignmentsTable.getAssignmentsByClassID(classID);
             for (Assignments a : assignments) {
+                LocalDate dueDate = LocalDate.parse(a.getDay());
+                if (dueDate.isBefore(startOfWeek) || dueDate.isAfter(endOfWeek)) continue;
+
+                String dayName = dueDate.getDayOfWeek().toString().toLowerCase();
+
                 Label label = new Label("[Due] " + a.getTime() + " - " + a.getType());
-                label.setStyle("-fx-background-color:" + a.getColour() + "; -fx-text-fill: white; -fx-padding: 5;");
-                dayContentMap.computeIfAbsent(a.getDay(), k -> new ArrayList<>()).add(label);
+                label.setWrapText(true);
+                label.setMaxWidth(Double.MAX_VALUE);
+                label.setCursor(Cursor.HAND);
+                label.setStyle(
+                        "-fx-background-color:" + a.getColour() + ";" +
+                                "-fx-text-fill: white;" +
+                                "-fx-padding: 5 10 5 10;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-font-size: 16px;"
+                );
+                label.setOnMouseEntered(e -> label.setStyle(
+                        label.getStyle() +
+                                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.5, 0, 2);" +
+                                "-fx-scale-x: 1.02;" +
+                                "-fx-scale-y: 1.02;"
+                ));
+                label.setOnMouseExited(e -> label.setStyle(
+                        label.getStyle().replaceAll("-fx-effect: .*?;", "") +
+                                "-fx-scale-x: 1.0;" +
+                                "-fx-scale-y: 1.0;"
+                ));
+
+                dayContentMap.computeIfAbsent(dayName, k -> new ArrayList<>()).add(label);
             }
         }
 
@@ -103,6 +157,8 @@ public class MainScreenController {
         }
     }
 
+
+
     private Pane getPaneForDay(String day) {
         return switch (day.toLowerCase()) {
             case "monday" -> mondayPane;
@@ -115,4 +171,69 @@ public class MainScreenController {
             default -> null;
         };
     }
+
+    private void loadAssignmentCountdown(VBox container) {
+        if (!Session.isLoggedIn()) return;
+
+        int userID = Session.getCurrentUser().getUserID();
+        AssignmentsTable assignmentsTable = new AssignmentsTable();
+        ClassTable classTable = new ClassTable();
+
+        List<Assignments> allAssignments = new ArrayList<>();
+        for (Class c : classTable.getClassesByUser(userID)) {
+            allAssignments.addAll(assignmentsTable.getAssignmentsByClassID(c.getClassID()));
+        }
+
+        LocalDate today = LocalDate.now();
+
+        allAssignments.removeIf(a -> LocalDate.parse(a.getDay()).isBefore(today));
+        allAssignments.sort(Comparator.comparing(a -> LocalDate.parse(a.getDay())));
+
+        List<Assignments> top4 = allAssignments.stream().limit(4).toList();
+        container.getChildren().clear();
+
+        for (Assignments a : top4) {
+            LocalDate dueDate = LocalDate.parse(a.getDay());
+            long daysLeft = java.time.temporal.ChronoUnit.DAYS.between(today, dueDate);
+
+            // ITS HERE DUMMY //
+            String dueLabel;
+            if (daysLeft == 0) {
+                dueLabel = "Today";
+            } else if (daysLeft == 1) {
+                dueLabel = "1 Day";
+            } else {
+                dueLabel = daysLeft + " Days";
+            }
+            String className = classTable.getClassNameByID(a.getClassID());
+
+            HBox row = new HBox(10);
+            row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+            Label name = new Label(className);
+            name.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;");
+
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+            String colour;
+            if (daysLeft <= 2) {
+                colour = "#FF5252"; // red (urgent)
+            } else if (daysLeft <= 7) {
+                colour = "#FFEB3B"; // yellow (semi urgenct)
+            } else {
+                colour = "#69F0AE"; // green (non urgent)
+            }
+
+            Label dueIn = new Label(dueLabel);
+            dueIn.setStyle("-fx-text-fill: " + colour + "; -fx-font-size: 16px;");
+
+            row.getChildren().addAll(name, spacer, dueIn);
+            container.getChildren().add(row);
+
+        }
+    }
+
+
+
 }

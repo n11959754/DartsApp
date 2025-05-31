@@ -12,7 +12,7 @@ public class LandingPage extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LandingPage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
-        stage.setTitle("Landing Page");
+        stage.setTitle("Darts App");
         stage.setScene(scene);
         stage.show();
 
