@@ -170,4 +170,19 @@ public class ClassTable {
         }
         return classes;
     }
+
+    public String getClassNameByID(int classID) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT className FROM Class WHERE id = ?");
+            statement.setInt(1, classID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("className");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
+    }
+
 }

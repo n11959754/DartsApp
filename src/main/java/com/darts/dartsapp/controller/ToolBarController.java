@@ -1,5 +1,6 @@
 package com.darts.dartsapp.controller;
 
+import com.darts.dartsapp.model.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -35,11 +36,23 @@ public class ToolBarController {
 
 
         settings.setOnAction(e -> {
-            //open settings
+            try {
+                onSettingsClick();  // directly call your existing method
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });                                                     //actions for the context menu buttons
 
         signOut.setOnAction(e -> {
-            //sign out
+            try {
+                Session.clear();  // Logs out the current user
+                Stage stage = (Stage) profileButton.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/LandingPage-view.fxml"));
+                Scene scene = new Scene(loader.load(), 1324, 768);
+                stage.setScene(scene);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
 
         profileMenu.getItems().addAll(settings, signOut);
@@ -103,4 +116,5 @@ public class ToolBarController {
         String url = "https://outlook.office365.com/mail/";
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
     }
+
 }

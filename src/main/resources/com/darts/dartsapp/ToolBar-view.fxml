@@ -16,8 +16,8 @@
       style="-fx-background-color: #2F638F;">
 
     <!--navigation buttons-->
-    <Button text="☰" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: white;"/>
-    <Button fx:id="MainScreen" text="DartsApp" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onMainScreenClick"/>
+
+    <Button fx:id="MainScreen" text="DARTS APP" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onMainScreenClick"/>
     <Button fx:id="Calendar" text="Calendar" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onCalendarClick"/>
     <Button fx:id="Tasks" text="Tasks" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onTasksClick"/>
     <Button fx:id="Settings" text="Settings" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px;" onAction="#onSettingsClick"/>
