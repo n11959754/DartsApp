@@ -1,7 +1,7 @@
 package com.darts.dartsapp.controller.calendar;
 
 import com.darts.dartsapp.model.ClassTable;
-import com.darts.dartsapp.model.ClassTimeSlot; // Correct import
+import com.darts.dartsapp.model.ClassTimeSlot;
 import com.darts.dartsapp.model.ClassTimeSlotTable;
 import com.darts.dartsapp.model.Session;
 
@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.ButtonBar; // Added for ButtonData
+import javafx.scene.control.ButtonBar;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -79,6 +79,7 @@ public class CalendarController {
         drawCalendar();
     }
 
+    // sets up the calendar header row by creating labels for each day of the week sun-sat
     private void setupHeader() {
         String[] dayNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         for (int i = 0; i < 7; i++) {
@@ -96,6 +97,7 @@ public class CalendarController {
         }
     }
 
+    // fetches all class time slots from the database for the currently logged-in user
     private List<ClassTimeSlot> fetchClassTimeSlotsFromDB() {
         List<ClassTimeSlot> allSlots = new ArrayList<>();
         if (Session.isLoggedIn() && Session.getCurrentUser() != null) {
@@ -111,6 +113,7 @@ public class CalendarController {
         return allSlots;
     }
 
+    // maps a string representation of a day to the DayOfWeek
     private DayOfWeek mapStringToDayOfWeek(String dayString) {
         if (dayString == null) return null;
         try {
@@ -121,6 +124,7 @@ public class CalendarController {
         }
     }
 
+    // determines whether black or white text is more readable against the background colour
     private String determineTextColor(String backgroundColorHex) {
         if (backgroundColorHex == null || !backgroundColorHex.startsWith("#") ||
                 (backgroundColorHex.length() != 7 && backgroundColorHex.length() != 9)) {
@@ -135,6 +139,7 @@ public class CalendarController {
         }
     }
 
+    // loads classes for the week from the database and makes them ready to be displayed
     private void loadWeeklyEvents() {
         weeklyEvents.clear();
         Map<Integer, String> classIdToNameMap = new HashMap<>();
@@ -148,6 +153,7 @@ public class CalendarController {
             return;
         }
 
+        // fetches all class time slots from the database for the logged in user
         List<ClassTimeSlot> classSlots = fetchClassTimeSlotsFromDB();
         for (ClassTimeSlot slot : classSlots) {
             DayOfWeek dayOfWeek = mapStringToDayOfWeek(slot.getDay());
@@ -164,6 +170,7 @@ public class CalendarController {
                     .add(new Event(slot.getTime(), slotType, parentClassName, eventStyle, slot.getTimeSlotID()));
         }
 
+        // sorts the events for each day of the week
         for (List<Event> eventsOnDay : weeklyEvents.values()) {
             eventsOnDay.sort(Comparator.comparing((Event e) -> e.time)
                     .thenComparing(e -> e.parentClassName)
@@ -171,6 +178,7 @@ public class CalendarController {
         }
     }
 
+    // handles going back a month
     @FXML
     private void handlePreviousMonth(ActionEvent event) {
         currentYearMonth = currentYearMonth.minusMonths(1);
@@ -178,6 +186,7 @@ public class CalendarController {
         drawCalendar();
     }
 
+    // hangles going forwards a month
     @FXML
     private void handleNextMonth(ActionEvent event) {
         currentYearMonth = currentYearMonth.plusMonths(1);
@@ -185,11 +194,13 @@ public class CalendarController {
         drawCalendar();
     }
 
+    // redraws the calendar
     private void drawCalendar() {
         monthYearLabel.setText(currentYearMonth.format(monthYearFormatter).toUpperCase());
         populateCalendarGrid();
     }
 
+    // populates the main calendar grid with day cells for the current month
     private void populateCalendarGrid() {
         if (calendarGrid == null) return;
         calendarGrid.getChildren().removeIf(node -> GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0);
@@ -198,6 +209,7 @@ public class CalendarController {
         int daysInMonth = currentYearMonth.lengthOfMonth();
         int currentDay = 1;
 
+        // iterates through the rows of the calendar grid to cover all possible month layouts
         for (int row = 1; row <= 6; row++) {
             for (int col = 0; col < 7; col++) {
                 if (row >= calendarGrid.getRowCount() && calendarGrid.getRowCount() > 0) {
@@ -218,24 +230,30 @@ public class CalendarController {
         }
     }
 
+    // creates and returns a StackPane representing a single date cell in the calendar
     private StackPane createDateCell(LocalDate date) {
         StackPane cell = new StackPane();
         cell.setUserData(date);
         cell.setOnMouseClicked(this::handleDateCellClick);
         cell.setStyle(DATE_CELL_STYLE);
 
+        // label for displaying the day number
         Label dateLabel = new Label(String.valueOf(date.getDayOfMonth()));
         dateLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
         StackPane.setAlignment(dateLabel, Pos.TOP_RIGHT);
         StackPane.setMargin(dateLabel, new Insets(2, 5, 0, 0));
 
+        // VBox to hold the date label and any event labels for this day
         VBox contentBox = new VBox(2);
         contentBox.setAlignment(Pos.TOP_LEFT);
         contentBox.setPadding(new Insets(2));
         contentBox.getChildren().add(dateLabel);
 
+        // retrieve events scheduled for this particular day of the week
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         List<Event> eventsForDay = weeklyEvents.get(dayOfWeek);
+
+        // if there are events for this day create and add labels for them
         if (eventsForDay != null) {
             for (Event event : eventsForDay) {
                 String displayText = event.time + " " + event.parentClassName + " - " + event.type;
@@ -254,6 +272,7 @@ public class CalendarController {
         return cell;
     }
 
+    // handles empty calendar days
     private StackPane createEmptyCell() {
         StackPane cell = new StackPane();
         cell.setPadding(new Insets(5));
@@ -282,6 +301,7 @@ public class CalendarController {
         event.consume();
     }
 
+    // handles mouse click events on individual date cells in the calendar grid
     private static StackPane getStackPane(MouseEvent event) {
         Node sourceNode = (Node) event.getSource();
         StackPane clickedCell = null;
@@ -299,21 +319,26 @@ public class CalendarController {
         return clickedCell;
     }
 
+    // displays a dialog menu to allow the user to add a new weekly class time slot for a specified date
     private void showAddClassDialog(LocalDate date) {
+        // Initialises the dialog for adding a new class slot
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Add New Class Slot");
         dialog.setHeaderText("Add new weekly slot for: " + date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + "s");
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
+        // create a GridPane for laying out input fields
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 20, 10, 10));
 
+        // user input field for class code
         TextField classCodeField = new TextField();
         final List<com.darts.dartsapp.model.Class> userClasses;
 
+        // checks the user session and retrieve user's classes
         if (Session.isLoggedIn() && Session.getCurrentUser() != null) {
             userClasses = classTable.getClassesByUser(Session.getCurrentUser().getUserID());
         } else {
@@ -322,6 +347,7 @@ public class CalendarController {
             return;
         }
 
+        // tells the user if they have no existing classes registered
         if (userClasses.isEmpty()) {
             Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
             infoAlert.setTitle("No Existing Classes");
@@ -330,6 +356,7 @@ public class CalendarController {
             infoAlert.showAndWait();
         }
 
+        // Initialise input fields with prompts
         classCodeField.setPromptText("Enter Class Name");
         TextField typeField = new TextField();
         typeField.setPromptText("e.g., Lecture, Tutorial");
@@ -337,6 +364,7 @@ public class CalendarController {
         timeField.setPromptText("HH:mm (e.g., 10:00)");
         ColorPicker colorPicker = new ColorPicker(Color.LIGHTBLUE);
 
+        // labels and input fields for the grid
         grid.add(new Label("Selected Day:"), 0, 0);
         grid.add(new Label(date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)), 1, 0);
         grid.add(new Label("Class Name:"), 0, 1);
@@ -348,6 +376,7 @@ public class CalendarController {
         grid.add(new Label("Colour:"), 0, 4);
         grid.add(colorPicker, 1, 4);
 
+        // makes the input fields span remaining columns in the grid
         GridPane.setColumnSpan(classCodeField, GridPane.REMAINING);
         GridPane.setColumnSpan(typeField, GridPane.REMAINING);
         GridPane.setColumnSpan(timeField, GridPane.REMAINING);
@@ -357,6 +386,7 @@ public class CalendarController {
         Node okButtonNode = dialog.getDialogPane().lookupButton(ButtonType.OK);
         okButtonNode.setDisable(true);
 
+        // validates user inputs
         Runnable validateInputs = () -> {
             boolean timeValid = timeField.getText().matches("^([01]\\d|2[0-3]):([0-5]\\d)$");
             boolean classNameEntered = !classCodeField.getText().trim().isEmpty();
@@ -374,6 +404,7 @@ public class CalendarController {
 
         Optional<ButtonType> result = dialog.showAndWait();
 
+        // processes the result if the ok button is clicked
         if (result.isPresent() && result.get() == ButtonType.OK) {
             String enteredClassName = classCodeField.getText().trim();
             com.darts.dartsapp.model.Class selectedClass = null;
@@ -385,6 +416,7 @@ public class CalendarController {
             if (foundClassOpt.isPresent()) {
                 selectedClass = foundClassOpt.get();
             } else {
+                // if no class not found ask the user if they want to create it
                 Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmationDialog.setTitle("Create New Class?");
                 confirmationDialog.setHeaderText("Class Not Found: '" + enteredClassName + "'");
@@ -393,8 +425,9 @@ public class CalendarController {
                 ButtonType createAndAddButton = new ButtonType("Create and Add Slot");
                 ButtonType justCancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 confirmationDialog.getButtonTypes().setAll(createAndAddButton, justCancelButton);
-
                 Optional<ButtonType> confResult = confirmationDialog.showAndWait();
+
+                // if user confirms create the new class
                 if (confResult.isPresent() && confResult.get() == createAndAddButton) {
                     com.darts.dartsapp.model.Class newClassToCreate = new com.darts.dartsapp.model.Class(
                             Session.getCurrentUser().getUserID(),
@@ -408,6 +441,7 @@ public class CalendarController {
                         return;
                     }
                 } else {
+                    // if user cancels class creation inform and exit menu
                     new Alert(Alert.AlertType.INFORMATION, "Action cancelled. Class slot not added.").showAndWait();
                     resetCellSelectionAfterDialog();
                     return;
@@ -419,6 +453,7 @@ public class CalendarController {
                 return;
             }
 
+            // retrieves slot details from input fields
             String type = typeField.getText().trim();
             String timeInput = timeField.getText().trim();
             String dayOfWeekStr = date.getDayOfWeek().toString();
@@ -428,6 +463,7 @@ public class CalendarController {
                     (int) (selectedColor.getGreen() * 255),
                     (int) (selectedColor.getBlue() * 255));
 
+            // creates a new ClassTimeSlot object.
             ClassTimeSlot newSlot = new ClassTimeSlot(
                     selectedClass.getClassID(),
                     timeInput,
@@ -436,6 +472,7 @@ public class CalendarController {
             );
             newSlot.setColour(colorHex);
 
+            // attempts to save the new time slot to the database.
             try {
                 timeSlotTable.createClassTimeSlot(newSlot);
                 new Alert(Alert.AlertType.INFORMATION, "Class slot added successfully for '" + selectedClass.getClassName() + "'!").showAndWait();
@@ -449,6 +486,7 @@ public class CalendarController {
         resetCellSelectionAfterDialog();
     }
 
+    //  resets the visual selection state of any currently selected calendar day
     private void resetCellSelectionAfterDialog() {
         if (currentlySelectedCell != null) {
             if (!currentlySelectedCell.getStyle().equals(EMPTY_CELL_STYLE) && currentlySelectedCell.getUserData() instanceof LocalDate) {
@@ -458,10 +496,12 @@ public class CalendarController {
         }
     }
 
+    // handles the mouse click events on individual class event labels within a date cell
     private void handleClassEventClick(MouseEvent event) {
         Label clickedLabel = (Label) event.getSource();
         Event eventData = (Event) clickedLabel.getUserData();
 
+        // proceeds only if there is valid event data associated with the clicked label
         if (eventData != null) {
             int timeSlotIdToDelete = eventData.getTimeSlotId();
             String eventDetails = eventData.time + " " + eventData.parentClassName + " - " + eventData.type;
@@ -470,7 +510,10 @@ public class CalendarController {
             confirmationDialog.setHeaderText("Delete Class Time Slot?");
             confirmationDialog.setContentText("Are you sure you want to delete: " + eventDetails + "?");
 
+            // show the dialog and wait for the user's response
             Optional<ButtonType> result = confirmationDialog.showAndWait();
+
+            // if the user clicks ok to confirm deletion proceed to try statement to delete event from db
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 try {
                     timeSlotTable.deleteClassTimeSlot(timeSlotIdToDelete);
