@@ -21,10 +21,10 @@ public class TasksTable {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS Tasks ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "assignmentsID INTEGER NOT NULL,"
+                    + "assignmentID INTEGER NOT NULL,"
                     + "details VARCHAR NOT NULL,"
                     + "duration INTEGER NOT NULL,"
-                    + "FOREIGN KEY (assignmentsID) REFERENCES Assignments(id)"
+                    + "FOREIGN KEY (assignmentID) REFERENCES Assignments(id)"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class TasksTable {
 
     public void createTask(Tasks task) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Tasks (assignmentsID, details, duration) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Tasks (assignmentID, details, duration) VALUES (?, ?, ?)");
             statement.setInt(1, task.getAssignmentID());
             statement.setString(2, task.getDetails());
             statement.setInt(3, task.getDuration());
@@ -47,7 +47,7 @@ public class TasksTable {
 
     public void updateTasks(Tasks task) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Tasks SET assignmentsID = ?, details = ?, duration = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE Tasks SET assignmentID = ?, details = ?, duration = ? WHERE id = ?");
             statement.setInt(1, task.getAssignmentID());
             statement.setString(2, task.getDetails());
             statement.setInt(3, task.getDuration());
@@ -71,7 +71,7 @@ public class TasksTable {
 
     public Tasks getTask(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Settings WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -91,10 +91,10 @@ public class TasksTable {
     public List<Tasks> getAllTasks(int id) {
         List<Tasks> tasks = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Settings WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE assignmentID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 int assignmentID = resultSet.getInt("assignmentID");
                 String details = resultSet.getString("details");
                 int duration = resultSet.getInt("duration");
@@ -107,5 +107,25 @@ public class TasksTable {
         }
         return tasks;
     }
+
+    public List<Tasks> getAllTasks() {
+        List<Tasks> tasks = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int assignmentID = resultSet.getInt("assignmentID");
+                String details = resultSet.getString("details");
+                int duration = resultSet.getInt("duration");
+                Tasks task = new Tasks(assignmentID, details, duration);
+                tasks.add(task);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+
 
 }
