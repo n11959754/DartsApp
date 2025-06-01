@@ -127,9 +127,9 @@ public class ClassTable {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement("SELECT * FROM Class WHERE id = ?");
+            statement = connection.prepareStatement("SELECT * FROM Class WHERE id = ?");    //SQL statement to get class from ID
             statement.setInt(1, id);
-            resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();       //execute query
             if (resultSet.next()) {
                 int userID = resultSet.getInt("userID");
                 String className = resultSet.getString("className");
@@ -157,15 +157,15 @@ public class ClassTable {
         }
         return null;
     }
-
+// gets classes by User
     public List<Class> getClassesByUser(int userId) {
         List<Class> classes = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement("SELECT * FROM Class WHERE userID = ?");                //sql statement to select all from class table with matching UserID
-            statement.setInt(1, userId);        //set userid in SQL
-            resultSet = statement.executeQuery();
+            statement.setInt(1, userId);
+            resultSet = statement.executeQuery();           //Exe query
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String className = resultSet.getString("className");

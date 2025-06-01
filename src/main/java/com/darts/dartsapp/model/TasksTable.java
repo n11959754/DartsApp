@@ -12,10 +12,10 @@ public class TasksTable {
     private Connection connection;
 
     public TasksTable() {
-        connection = SqlConnect.getInstance();
+        connection = SqlConnect.getInstance(); //conntect to DB
         createTable();
     }
-
+//cretaes table if it doesnt exist
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -31,7 +31,7 @@ public class TasksTable {
             e.printStackTrace();
         }
     }
-
+//creates task and store to DB
     public void createTask(Tasks task) {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Tasks (assignmentID, details, duration) VALUES (?, ?, ?)");
@@ -45,6 +45,7 @@ public class TasksTable {
 
     }
 
+    //updates tasks, currenty updating tasks isnt implemented
     public void updateTasks(Tasks task) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE Tasks SET assignmentID = ?, details = ?, duration = ? WHERE id = ?");
@@ -57,7 +58,7 @@ public class TasksTable {
             e.printStackTrace();
         }
     }
-
+//del tasks, currently tasks cannot be deleted ///////////////////////////
     public void deleteTask(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Tasks WHERE id = ?");
@@ -69,37 +70,19 @@ public class TasksTable {
 
     }
 
-//    public Tasks getTask(int id) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE id = ?");
-//            statement.setInt(1, id);
-//            ResultSet resultSet = statement.executeQuery();
-//            if (resultSet.next()) {
-//                int assignmentID = resultSet.getInt("assignmentID");
-//                String details = resultSet.getString("details");
-//                int duration = resultSet.getInt("duration");
-//                Tasks task = new Tasks(assignmentID, details, duration);
-//                return task;
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
+    //retreives all tasks by assignment
     public List<Tasks> getAllTasks(int id) {
         List<Tasks> tasks = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE assignmentID = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE assignmentID = ?");    //SQL Query to select everything from tasks where assignment id matches
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery(); //executes
             while (resultSet.next()) {
                 int assignmentID = resultSet.getInt("assignmentID");
                 String details = resultSet.getString("details");
                 int duration = resultSet.getInt("duration");
                 Tasks task = new Tasks(assignmentID, details, duration);
-                tasks.add(task);
+                tasks.add(task); //stores
             }
 
         } catch (Exception e) {
@@ -107,38 +90,20 @@ public class TasksTable {
         }
         return tasks;
     }
-
-//    public List<Tasks> getAllTasks() {
-//        List<Tasks> tasks = new ArrayList<>();
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks");
-//            ResultSet resultSet = statement.executeQuery();
-//            while (resultSet.next()) {
-//                int assignmentID = resultSet.getInt("assignmentID");
-//                String details = resultSet.getString("details");
-//                int duration = resultSet.getInt("duration");
-//                Tasks task = new Tasks(assignmentID, details, duration);
-//                tasks.add(task);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return tasks;
-//    }
-
-
+//gets tasks by UserID
     public List<Tasks> getTasksByUserID(int userId) {
         List<Tasks> tasks = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT t.* FROM Tasks t " +
-                            "JOIN Assignments a ON t.assignmentID = a.id " +
+                            "JOIN Assignments a ON t.assignmentID = a.id " +                //SQL statement
                             "JOIN Class c ON a.classID = c.id " +
                             "WHERE c.userID = ?"
             );
             statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();  //executes SQL statement
 
+            //retreive each row into task and add to list
             while (resultSet.next()) {
                 int assignmentID = resultSet.getInt("assignmentID");
                 String details = resultSet.getString("details");
@@ -148,9 +113,9 @@ public class TasksTable {
                 tasks.add(task);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); //error
         }
-        return tasks;
+        return tasks; //return all tasks
     }
 
 

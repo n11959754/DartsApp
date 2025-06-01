@@ -15,7 +15,7 @@ public class AssignmentsTable {
         connection = SqlConnect.getInstance();
         createTable();
     }
-
+//SQL Query to create Assignments Table if it doesnt exist
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -71,7 +71,7 @@ public class AssignmentsTable {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Assignments WHERE id = ?");
             statement.setInt(1, id);
-            statement.executeUpdate();
+            statement.executeUpdate(); //exe SQL statement
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class AssignmentsTable {
                 Assignments assignment = new Assignments(
                         resultSet.getInt("classID"),
                         resultSet.getString("time"),
-                        resultSet.getString("day"),
+                        resultSet.getString("day"),         //creates assignment objects
                         resultSet.getInt("weight"),
                         resultSet.getString("type"),
                         resultSet.getString("colour")

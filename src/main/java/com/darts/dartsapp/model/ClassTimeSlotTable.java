@@ -28,17 +28,17 @@ public class ClassTimeSlotTable {
                     + "colour VARCHAR DEFAULT '#ffffff',"
                     + "FOREIGN KEY (classID) REFERENCES Class(id)"
                     + ")";
-            statement.execute(query);
+            statement.execute(query);       //executes query
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+//creates a class timeslot for a class for a user
     public void createClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
 
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO TimeSlots (classID, time, day, type, colour) VALUES (?, ?, ?, ?, ?)"
+                    "INSERT INTO TimeSlots (classID, time, day, type, colour) VALUES (?, ?, ?, ?, ?)"       //SQL statement to add new time slot
             );
             statement.setInt(1, timeSlot.getClassID());
             statement.setString(2, timeSlot.getTime());
@@ -47,7 +47,7 @@ public class ClassTimeSlotTable {
             statement.setString(5, timeSlot.getColour());
             statement.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();        //Print error
         }
     }
 
@@ -67,24 +67,26 @@ public class ClassTimeSlotTable {
             e.printStackTrace();
         }
     }
-
+//deletes timeslot from the timeslot table
     public void deleteClassTimeSlot(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM TimeSlots WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM TimeSlots WHERE id = ?");        //SQL q to remove all where classID matches
             statement.setInt(1, id);
-            statement.executeUpdate();
+            statement.executeUpdate();      //executes the deletion
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();        //error handling if something happens
         }
 
     }
-
+//gets all timeslots that belong to a specific classID
     public List<ClassTimeSlot> getTimeSlotsByClassID(int classId) {
         List<ClassTimeSlot> slots = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots WHERE classID = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots WHERE classID = ?");     //SQL query select all from timeslots where class id matches
             statement.setInt(1, classId);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();     //runs query
+
+            //loops through all results and constructs a timeslot
             while (resultSet.next()) {
                 ClassTimeSlot slot = new ClassTimeSlot(
                         resultSet.getInt("classID"),
@@ -92,13 +94,15 @@ public class ClassTimeSlotTable {
                         resultSet.getString("day"),
                         resultSet.getString("type")
                 );
+
+                //sets additional fields
                 slot.setTimeSlotID(resultSet.getInt("id"));
                 slot.setColour(resultSet.getString("colour"));
-                slots.add(slot);
+                slots.add(slot); //adds to list
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return slots;
+        return slots;       //returns list of matching timeslots
     }
 }

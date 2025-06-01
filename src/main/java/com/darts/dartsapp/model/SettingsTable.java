@@ -15,7 +15,7 @@ public class SettingsTable {
         connection = SqlConnect.getInstance();
         createTable();
     }
-
+//creates setting table if not existed
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -43,7 +43,7 @@ public class SettingsTable {
         }
 
     }
-
+//update settings, not implemented due to time restraints
     public void updateSettings(Settings settings) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE Settings SET userID = ?, theme = ?, dateFormat = ?, timeFormat = ? WHERE id = ?");
@@ -57,7 +57,7 @@ public class SettingsTable {
             e.printStackTrace();
         }
     }
-
+//update settings, not implemented due to time restraints
     public void deleteSettings(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Settings WHERE id = ?");
@@ -69,6 +69,7 @@ public class SettingsTable {
 
     }
 
+    //getSettings, not implemented due to time restraints
     public Settings getSettings(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Settings WHERE id = ?");

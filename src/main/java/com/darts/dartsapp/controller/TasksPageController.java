@@ -124,13 +124,17 @@ public class TasksPageController {
     private void refreshTaskList(int assignmentID) {
         TaskList.getChildren().clear();
         TasksTable tasksTable = new TasksTable();                       //Refresh task list to display newly generated tasks
-        List<Tasks> tasks = tasksTable.getAllTasks(assignmentID); //gets all tasks for the user
-
-        for (Tasks task : tasks) {
-            CheckBox taskCheckBox = new CheckBox("• " + task.getDetails() + " (" + task.getDuration() + "h)"); //generates a new checkbox for each task, displaying task, detail and duration
-            taskCheckBox.setStyle("-fx-font-size: 14px;");
-            TaskList.getChildren().add(taskCheckBox);
+        if (Session.isLoggedIn() && Session.getCurrentUser() != null)
+        {
+          int userID = Session.getCurrentUser().getUserID();
+          List<Tasks> tasks = tasksTable.getAllTasks(assignmentID); //gets all tasks for the user
+            for (Tasks task : tasks) {
+                CheckBox taskCheckBox = new CheckBox("• " + task.getDetails() + " (" + task.getDuration() + "h)"); //generates a new checkbox for each task, displaying task, detail and duration
+                taskCheckBox.setStyle("-fx-font-size: 14px;");
+                TaskList.getChildren().add(taskCheckBox);
+            }
         }
+
     }
 
     //Same as above but refreshes ALL tasks for the user used by the REFRESH button
