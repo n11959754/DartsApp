@@ -16,15 +16,16 @@ public class AITextToResponse {
     static final String LLAMA3 = "llama3.1";
     static final String host = "http://localhost:11434/";
 
-    public static void generateAndStoreTasks(String selectedAssignment, String allocatedTimeText, String dueDay, String dueTime, int assignmentID, int hours) {
+    public static void generateAndStoreTasks(String selectedAssignment, String allocatedTimeText, String dueDay, String dueTime, int assignmentID, int hours, String taskType){
         String prompt = String.format( // This is the prompt the AI is given
                 "I have an assignment called \"%s\" due on %s at %s. " +
                         "Today is %s. I want to work on it for %s hours total. " +
                         "Please break this assignment into smaller tasks, each as a bullet point starting with '•'. " +
+                        "The assignment is a %s task. " +
                         "Each task should include a short title, an estimated duration in full hours (which means no decimals/half hours) in parentheses, and a short description. " +
                         "Make sure all durations add up to %s hours. Please format the list of tasks with the dot point as previously stated, followed by **title of task** (x hours). then on a line underneath the description." +
                         "Please keep your response under 45 words.",
-                selectedAssignment, dueDay, dueTime, LocalDate.now(), allocatedTimeText, allocatedTimeText
+                selectedAssignment, dueDay, dueTime, LocalDate.now(), allocatedTimeText, taskType, allocatedTimeText
         );
 
         try {

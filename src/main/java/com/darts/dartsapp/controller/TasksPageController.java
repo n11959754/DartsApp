@@ -109,7 +109,8 @@ public class TasksPageController {
         String dueTime = selectedAssignment.getTime();          //gets assignment info
         int assignmentID = selectedAssignment.getAssignmentID();
             //Gives the AI the assignment info, generates and stores this into the tasks table (the db)
-        AITextToResponse.generateAndStoreTasks(className, allocatedTimeText, dueDay, dueTime, assignmentID, hours);
+        String taskType = selectedAssignment.getType();
+        AITextToResponse.generateAndStoreTasks(className, allocatedTimeText, dueDay, dueTime, assignmentID, hours, taskType);
         refreshTaskList(assignmentID);      //Refresh the task list for the assignment added so user sees new tasks
     }
 

@@ -58,7 +58,7 @@ public class TasksTable {
             e.printStackTrace();
         }
     }
-//del tasks, currently tasks cannot be deleted ///////////////////////////
+//del tasks, currently tasks cannot be deleted
     public void deleteTask(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Tasks WHERE id = ?");
