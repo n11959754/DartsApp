@@ -14,20 +14,20 @@
             prefHeight="400.0" prefWidth="600.0">
     <!-- Top Menu Bar -->
     <top>
-        <fx:include source="ToolBar-view.fxml" />
+        <fx:include source="ToolBar-view.fxml" /><!--reference to the toolbar view done to prevent repeated code uneccisaryily-->
     </top>
 
     <center>
         <VBox spacing="30" alignment="TOP_CENTER" style="-fx-padding: 30;" VBox.vgrow="ALWAYS">
 <!--            Center of screen content-->
-            <VBox style ="-fx-background-color: #0B5C82; -fx-background-radius: 15; -fx-padding: 5;" fx:id="Calendar" onMouseClicked="#onCalendarClick" VBox.vgrow="ALWAYS">
+            <VBox style ="-fx-background-color: #0B5C82; -fx-background-radius: 15; -fx-padding: 5;" fx:id="Calendar" onMouseClicked="#onCalendarClick" VBox.vgrow="ALWAYS">    <!--VBox for Weekly Preview widget, declares method when clicked-->
                 <Label text = "Weekly Preview" style="-fx-text-fill: white; -fx-font-size: 25px;" alignment="CENTER"/>
                 <GridPane hgap="4" vgap="2" style="-fx-padding: 15;" VBox.vgrow="ALWAYS">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="14.28" />
                         <ColumnConstraints percentWidth="14.28" />
                         <ColumnConstraints percentWidth="14.28" />
-                        <ColumnConstraints percentWidth="14.28" />
+                        <ColumnConstraints percentWidth="14.28" />              <!-- divides the weekly grid evenly by 7 (100 / 7 = 14.28)-->
                         <ColumnConstraints percentWidth="14.28" />
                         <ColumnConstraints percentWidth="14.28" />
                         <ColumnConstraints percentWidth="14.28" />
@@ -41,7 +41,7 @@
                     <Label text="Monday" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
                     <Label text="Tuesday" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
                     <Label text="Wednesdsay" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
-                    <Label text="Thursday" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                    <Label text="Thursday" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>           <!--Styling for the heading for each grid in the weekly calandar widget-->
                     <Label text="Friday" GridPane.columnIndex="4" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
                     <Label text="Saturday" GridPane.columnIndex="5" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
                     <Label text="Sunday" GridPane.columnIndex="6" GridPane.rowIndex="0" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;"/>
@@ -50,7 +50,7 @@
                     <VBox fx:id="mondayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
                     <VBox fx:id="tuesdayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
                     <VBox fx:id="wednesdayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
-                    <VBox fx:id="thursdayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="3" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
+                    <VBox fx:id="thursdayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="3" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/> <!--styling + fx:id for the calandar grid-->
                     <VBox fx:id="fridayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="4" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
                     <VBox fx:id="saturdayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="5" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
                     <VBox fx:id="sundayPane" spacing="8" GridPane.rowIndex="1" GridPane.columnIndex="6" style="-fx-background-color: #D3D3D3; -fx-background-radius: 5;" GridPane.vgrow="ALWAYS"/>
@@ -63,11 +63,11 @@
             <HBox spacing="30" alignment="CENTER">
 
 <!--                Tasks Widget-->
-                <VBox style="-fx-background-color: #165675; -fx-background-radius: 15px; -fx-padding: 20;" prefWidth="600" fx:id="Tasks" onMouseClicked="#onTasksClick">
+                <VBox style="-fx-background-color: #165675; -fx-background-radius: 15px; -fx-padding: 20;" prefWidth="600" fx:id="Tasks" onMouseClicked="#onTasksClick">     <!-- styling for tasks widget + assigns method when the widget is clicked-->
                     <Label text="Tasks" style="-fx-text-fill: white; -fx-font-size: 20px;"/>
                     <VBox spacing="15" style="-fx-padding: 15;">
                         <CheckBox text="Task Example" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
-                        <CheckBox text="Task Example" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+                        <CheckBox text="Task Example" style="-fx-text-fill: white; -fx-font-size: 16px;"/>          <!--placeholder tasks for tasks widget which wasnt completed -->
                         <CheckBox text="Task Example" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
                         <CheckBox text="Task Example" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
                     </VBox>
@@ -80,7 +80,7 @@
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="Due In" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
                     </HBox>
-                    <VBox fx:id="assignmentsCountdownVBox" spacing="15" style="-fx-padding: 15;"/>
+                    <VBox fx:id="assignmentsCountdownVBox" spacing="15" style="-fx-padding: 15;"/>              <!-- refereence to the method which creates the coutdown in the controller.-->
                 </VBox>
             </HBox>
         </VBox>

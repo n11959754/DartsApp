@@ -37,12 +37,13 @@ public class AssignmentsTable {
 
     public void createAssignment(Assignments assignment) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Assignments (classID, time, day weight, type) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Assignments (classID, time, day, weight, type, colour) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setInt(1, assignment.getClassID());
             statement.setString(2, assignment.getTime());
             statement.setString(3, assignment.getDay());
             statement.setInt(4, assignment.getWeight());
             statement.setString(5, assignment.getType());
+            statement.setString(6, assignment.getColour());
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +89,8 @@ public class AssignmentsTable {
                 String day = resultSet.getString("day");
                 int weight = resultSet.getInt("weight");
                 String type = resultSet.getString("type");
-                Assignments assignment = new Assignments(classID, time, day, weight, type);
+                String colour = resultSet.getString("colour");
+                Assignments assignment = new Assignments(classID, time, day, weight, type, colour);
                 assignment.setAssignmentID(id);
                 return assignment;
             }
@@ -111,7 +113,8 @@ public class AssignmentsTable {
                 String day = resultSet.getString("day");
                 int weight = resultSet.getInt("weight");
                 String type = resultSet.getString("type");
-                Assignments assignment = new Assignments(classID, time, day, weight, type);
+                String colour = resultSet.getString("colour");
+                Assignments assignment = new Assignments(classID, time, day, weight, type, colour);
                 assignment.setAssignmentID(id);
                 assignments.add(assignment);
             }
@@ -134,7 +137,8 @@ public class AssignmentsTable {
                         resultSet.getString("time"),
                         resultSet.getString("day"),
                         resultSet.getInt("weight"),
-                        resultSet.getString("type")
+                        resultSet.getString("type"),
+                        resultSet.getString("colour")
                 );
                 assignment.setAssignmentID(resultSet.getInt("id"));
                 assignment.setColour(resultSet.getString("colour"));

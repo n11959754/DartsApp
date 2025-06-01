@@ -127,5 +127,33 @@ public class TasksTable {
     }
 
 
+    public List<Tasks> getTasksByUserID(int userId) {
+        List<Tasks> tasks = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT t.* FROM Tasks t " +
+                            "JOIN Assignments a ON t.assignmentID = a.id " +
+                            "JOIN Class c ON a.classID = c.id " +
+                            "WHERE c.userID = ?"
+            );
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int assignmentID = resultSet.getInt("assignmentID");
+                String details = resultSet.getString("details");
+                int duration = resultSet.getInt("duration");
+                Tasks task = new Tasks(assignmentID, details, duration);
+                task.setID(resultSet.getInt("id"));
+                tasks.add(task);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+
+
+
 
 }

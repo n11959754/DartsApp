@@ -6,9 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import com.darts.dartsapp.model.Class;
 
+
+import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +39,23 @@ public class TasksPageController {
     @FXML
     private VBox TaskList;
 
+    @FXML
+    private VBox addAssignmentBox;
+
+    @FXML
+    private ComboBox<Class> classSelectBox;
+
+    @FXML
+    private TextField assignmentTypeField;
+
+    @FXML
+    private TextField assignmentTimeField;
+
+    @FXML
+    private DatePicker assignmentDatePicker;
+
+    @FXML
+    private TextField assignmentWeightField;
 
 
     private final AssignmentsTable assignmentsTable = new AssignmentsTable();
@@ -52,7 +76,8 @@ public class TasksPageController {
                     setText(null);
                 } else {
                     com.darts.dartsapp.model.Class cls = classTable.getClass(item.getClassID());
-                    setText(cls != null ? cls.getClassName() : "Unknown Class");
+                    String className = (cls != null) ? cls.getClassName() : "Unknown Class";
+                    setText(className + " — " + item.getType());
                 }
             }
         };
@@ -123,24 +148,27 @@ public class TasksPageController {
         List<Tasks> tasks = tasksTable.getAllTasks(assignmentID);
 
         for (Tasks task : tasks) {
-            Label taskLabel = new Label("• " + task.getDetails() + " (" + task.getDuration() + "h)");
-            taskLabel.setStyle("-fx-font-size: 14px;");
-            TaskList.getChildren().add(taskLabel);
+            CheckBox taskCheckBox = new CheckBox("• " + task.getDetails() + " (" + task.getDuration() + "h)");
+            taskCheckBox.setStyle("-fx-font-size: 14px;");
+            TaskList.getChildren().add(taskCheckBox);
         }
     }
 
     private void refreshTaskList() {
         TaskList.getChildren().clear();
         TasksTable tasksTable = new TasksTable();
-        List<Tasks> tasks = tasksTable.getAllTasks();
 
-        for (Tasks task : tasks) {
-            Label taskLabel = new Label("• " + task.getDetails() + " (" + task.getDuration() + "h)");
-            taskLabel.setStyle("-fx-font-size: 14px;");
-            TaskList.getChildren().add(taskLabel);
+        if (Session.isLoggedIn() && Session.getCurrentUser() != null) {
+            int userID = Session.getCurrentUser().getUserID();
+            List<Tasks> tasks = tasksTable.getTasksByUserID(userID);
+
+            for (Tasks task : tasks) {
+                CheckBox taskCheckBox = new CheckBox("• " + task.getDetails() + " (" + task.getDuration() + "h)");
+                taskCheckBox.setStyle("-fx-font-size: 14px;");
+                TaskList.getChildren().add(taskCheckBox);
+            }
         }
     }
-
 
     @FXML
     private void OnAddButtonClick() {
@@ -167,6 +195,62 @@ public class TasksPageController {
     @FXML
     private void onDeleteButtonClick() {
         // not complete
+    }
+
+    @FXML
+    private void onShowAddAssignmentClick() {
+        boolean showing = addAssignmentBox.isVisible();
+        addAssignmentBox.setVisible(!showing);
+        addAssignmentBox.setManaged(!showing);
+
+        if (!showing && Session.isLoggedIn()) {
+            int userID = Session.getCurrentUser().getUserID();
+            List<Class> userClasses = classTable.getClassesByUser(userID);
+            classSelectBox.setItems(FXCollections.observableArrayList(userClasses));
+        }
+    }
+
+    @FXML
+    private void onSaveAssignmentClick() {
+        Class selectedClass = classSelectBox.getValue();
+        String type = assignmentTypeField.getText();
+        String time = assignmentTimeField.getText();
+        LocalDate date = assignmentDatePicker.getValue();
+        String weightStr = assignmentWeightField.getText();
+
+        if (selectedClass == null || type.isBlank() || time.isBlank() || date == null || weightStr.isBlank()) {
+            showError("Please fill in all fields before saving.");
+            return;
+        }
+
+        int weight;
+        try {
+            weight = Integer.parseInt(weightStr);
+        } catch (NumberFormatException e) {
+            showError("Weight must be a valid number.");
+            return;
+        }
+
+        Assignments newAssignment = new Assignments(
+                selectedClass.getClassID(),
+                time,
+                date.toString(),
+                weight,
+                type,
+                "#2196F3" //the def. colour
+        );
+
+        assignmentsTable.createAssignment(newAssignment);
+        AssignmentSelectionBox.getItems().add(newAssignment);
+        AssignmentSelectionBox.setValue(newAssignment);
+
+        addAssignmentBox.setVisible(false);
+        addAssignmentBox.setManaged(false);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Assignment added successfully!");
+        alert.showAndWait();
     }
 
 

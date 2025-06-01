@@ -22,4 +22,9 @@ public class Class {
     public void setClassName(String className) { this.className = className; }
 
     public String getClassName() { return className; }
+
+    @Override
+    public String toString(){
+        return className;
+    }
 }

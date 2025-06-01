@@ -11,12 +11,13 @@ public class Assignments {
     private String colour;
 
 
-    public Assignments(int classID, String time, String day, int weight, String type) {
+    public Assignments(int classID, String time, String day, int weight, String type, String colour) {
         this.classID = classID;
         this.time = time;
         this.day = day;
         this.weight = weight;
         this.type = type;
+        this.colour = colour;
     }
 
     public void setAssignmentID(int id) { this.assignmentID = id; }

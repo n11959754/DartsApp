@@ -29,7 +29,7 @@
             <HBox spacing="10">
                 <Label text="Tasks" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
                 <Label text="|" style="-fx-font-size: 20px;" />
-                <Button text="Select" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" onAction="#onSelectButtonClick" />
+                <Button text="Add Assignment" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" onAction="#onShowAddAssignmentClick" />
                 <Label text="|" style="-fx-font-size: 20px;" />
                 <Button text="Edit" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" onAction="#onEditButtonClick" />
                 <Label text="|" style="-fx-font-size: 20px;" />
@@ -39,6 +39,44 @@
                 <Label text="|" style="-fx-font-size: 20px;" />
                 <Button fx:id="refreshButton" text="Refresh" style="-fx-background-color: transparent; -fx-underline: true; -fx-font-size: 16px;" onAction="#OnRefreshButtonClick" />
             </HBox>
+
+            <!-- Drop down for add assignments-->
+
+            <VBox fx:id="addAssignmentBox" visible="false" managed="false" spacing="10"
+                  style="-fx-background-color: #eaf4ff; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;">
+
+                <Label text="Add New Assignment" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                <HBox spacing="10">
+                    <Label text="Class:" />
+                    <ComboBox fx:id="classSelectBox" promptText="Select class" prefWidth="200"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Type:" />
+                    <TextField fx:id="assignmentTypeField" promptText="e.g., Essay"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Due Time:" />
+                    <TextField fx:id="assignmentTimeField" promptText="e.g., 23:59"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Due Date:" />
+                    <DatePicker fx:id="assignmentDatePicker"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label text="Weight (%):" />
+                    <TextField fx:id="assignmentWeightField" promptText="e.g., 20"/>
+                </HBox>
+
+                <Button text="Save Assignment" onAction="#onSaveAssignmentClick"
+                        style="-fx-background-color: #2F638F; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </VBox>
+
+
 
             <!-- Fill out task details form -->
             <VBox fx:id="aiInputBox" visible="false" managed="false" spacing="10" style="-fx-background-color: #f4f4f4; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;">
