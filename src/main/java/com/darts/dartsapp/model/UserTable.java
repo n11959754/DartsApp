@@ -107,27 +107,4 @@ public class UserTable {
         return null;    //if not found
     }
 
-//
-//    public List<User> getAllUsers() {
-//        List<User> users = new ArrayList<>();
-//        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users")) {
-//            ResultSet resultSet = statement.executeQuery();
-//            while (resultSet.next()) {
-//                int id = resultSet.getInt("id");
-//                String userName = resultSet.getString("userName");
-//                String email = resultSet.getString("email");
-//                String phoneNumber = resultSet.getString("phone");
-//                String password = resultSet.getString("password");
-//                String dobStr = resultSet.getString("dob");
-//                LocalDate dob = (dobStr != null) ? LocalDate.parse(dobStr) : null;
-//
-//                User user = new User(userName, email, phoneNumber, password, dob);
-//                user.setUserID(id);
-//                users.add(user);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return users;
-//    }
 }
