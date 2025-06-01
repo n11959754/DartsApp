@@ -36,6 +36,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Controller for the calendar view.
+ * Manages the display of months, days, weekly recurring class events, and assignments on the calendar.
+ * Allows users to navigate between months, add new weekly class slots, and delete existing ones.
+ * Interacts with database tables for classes, class time slots, and assignments.
+ */
 public class CalendarController {
 
     @FXML private Label monthYearLabel;
@@ -228,6 +234,29 @@ public class CalendarController {
         }
     }
 
+    /**
+     * Creates and returns a StackPane representing a single date cell in the calendar.
+     * <p>
+     * This method constructs a visual cell for a specific date. The cell displays:
+     * <ul>
+     * <li>The day of the month.</li>
+     * <li>Recurring weekly events scheduled for that particular day of the week.</li>
+     * <li>Assignments due on this specific date, visible if a user is logged in and
+     * has assignments associated with their enrolled classes.</li>
+     * </ul>
+     * The date cell itself and the event labels within it are interactive,
+     * responding to mouse clicks to perform further actions (e.g. viewing details).
+     * Assignments are also displayed with their due times and associated class names
+     * styled based on their properties.
+     * </p>
+     *
+     * @param date The {@link java.time.LocalDate} for which to create the date cell.
+     * This date determines the day number displayed and is used to fetch
+     * relevant weekly events and specific assignments that are on those days.
+     * @return A {@link javafx.scene.layout.StackPane} representing the visual date cell,
+     * populated with the date number, scheduled weekly events and any
+     * assignments due on this date. The cell and its contents are styled.
+     */
     // creates and returns a StackPane representing a single date cell in the calendar
     private StackPane createDateCell(LocalDate date) {
         StackPane cell = new StackPane();
@@ -365,6 +394,32 @@ public class CalendarController {
         return targetCell;
     }
 
+    /**
+     * Displays a dialog to allow the user to add a new weekly class time slot for a specified date.
+     * <p>
+     * The dialog prompts the user for the class name, type (e.g. Lecture, Tutorial),
+     * time, and a colour for the class. It validates user input, ensuring that a class name
+     * and type are entered, and the time is in HH:mm format.
+     * </p>
+     * <p>
+     * Before allowing the addition of a slot, it checks if the user is logged in.
+     * It retrieves the user's existing classes. If the entered class name don't match
+     * an existing class, it offers the user the option to create a new class with that name.
+     * </p>
+     * <p>
+     * Upon successful validation and confirmation (and potential class creation),
+     * a new {@code ClassTimeSlot} is created and persisted. The UI (weekly events and calendar)
+     * is then refreshed. Appropriate alerts are shown for success, errors, or cancellations.
+     * </p>
+     * <p>
+     * The 'OK' button in the dialog is disabled until all required fields are valid.
+     * After the dialog is closed (either by 'OK', 'Cancel', or an error), the cell
+     * selection is reset.
+     * </p>
+     *
+     * @param date The {@link LocalDate} for which the new class time slot is being added.
+     * The day of the week from this date is used as a non-editable field in the dialog.
+     */
     // displays a dialog menu to allow the user to add a new weekly class time slot for a specified date
     private void showAddClassDialog(LocalDate date) {
         Dialog<ButtonType> dialog = new Dialog<>();
