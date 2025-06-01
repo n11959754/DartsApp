@@ -22,7 +22,7 @@ public class ClassTimeSlotTable {
             String query = "CREATE TABLE IF NOT EXISTS TimeSlots ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "classID INTEGER NOT NULL,"
-                    + "time VARCHAR NOT NULL,"
+                    + "time VARCHAR NOT NULL,"                              //SQL Query to create Time Slot Table
                     + "day VARCHAR NOT NULL,"
                     + "type VARCHAR NOT NULL,"
                     + "colour VARCHAR DEFAULT '#ffffff',"
@@ -34,7 +34,6 @@ public class ClassTimeSlotTable {
         }
     }
 
-    //  stores colour to SQL and fetches from timeSlot.getColour()
     public void createClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
 
@@ -52,6 +51,8 @@ public class ClassTimeSlotTable {
         }
     }
 
+
+        //Currently no way to update class time slot so this does nothing , in future this would be implemented.
     public void updateClassTimeSlot(ClassTimeSlot timeSlot) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE TimeSlots SET classID = ?, time = ?, day = ?, type = ?, colour = ? WHERE id = ?");
@@ -76,53 +77,6 @@ public class ClassTimeSlotTable {
             e.printStackTrace();
         }
 
-    }
-
-    public ClassTimeSlot getClassTimeSlot(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots WHERE id = ?");
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int classID = resultSet.getInt("classID");
-                String time = resultSet.getString("time");
-                String type= resultSet.getString("type");
-                String day = resultSet.getString("day");
-                String colour = resultSet.getString("colour");
-                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, time, day, type);
-                timeSlot.setTimeSlotID(id);
-                timeSlot.setColour(colour);
-                return timeSlot;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<ClassTimeSlot> getAllClassTimeSlots() {
-        List<ClassTimeSlot> timeSlots = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TimeSlots");
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int classID = resultSet.getInt("classID");
-                String time = resultSet.getString("time");
-                String type= resultSet.getString("type");
-                String day = resultSet.getString("day");
-                String colour = resultSet.getString("colour");
-                ClassTimeSlot timeSlot = new ClassTimeSlot(classID, time, day, type);
-                timeSlot.setTimeSlotID(id);
-                timeSlot.setColour(colour);
-                timeSlots.add(timeSlot);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return timeSlots;
     }
 
     public List<ClassTimeSlot> getTimeSlotsByClassID(int classId) {

@@ -11,7 +11,7 @@ public class User {
     private String password;
     private LocalDate birthday;
 
-    // Existing 4-arg constructor
+
     public User(String userName, String email, String phoneNumber, String password) {
         this.userName = userName;
         this.email = email;
@@ -19,7 +19,7 @@ public class User {
         this.password = password;
     }
 
-    // ✅ New constructor with birthday
+
     public User(String userName, String email, String phoneNumber, String password, LocalDate birthday) {
         this.userName = userName;
         this.email = email;

@@ -69,24 +69,24 @@ public class TasksTable {
 
     }
 
-    public Tasks getTask(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE id = ?");
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int assignmentID = resultSet.getInt("assignmentID");
-                String details = resultSet.getString("details");
-                int duration = resultSet.getInt("duration");
-                Tasks task = new Tasks(assignmentID, details, duration);
-                return task;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public Tasks getTask(int id) {
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks WHERE id = ?");
+//            statement.setInt(1, id);
+//            ResultSet resultSet = statement.executeQuery();
+//            if (resultSet.next()) {
+//                int assignmentID = resultSet.getInt("assignmentID");
+//                String details = resultSet.getString("details");
+//                int duration = resultSet.getInt("duration");
+//                Tasks task = new Tasks(assignmentID, details, duration);
+//                return task;
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public List<Tasks> getAllTasks(int id) {
         List<Tasks> tasks = new ArrayList<>();
@@ -108,23 +108,23 @@ public class TasksTable {
         return tasks;
     }
 
-    public List<Tasks> getAllTasks() {
-        List<Tasks> tasks = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks");
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int assignmentID = resultSet.getInt("assignmentID");
-                String details = resultSet.getString("details");
-                int duration = resultSet.getInt("duration");
-                Tasks task = new Tasks(assignmentID, details, duration);
-                tasks.add(task);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return tasks;
-    }
+//    public List<Tasks> getAllTasks() {
+//        List<Tasks> tasks = new ArrayList<>();
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tasks");
+//            ResultSet resultSet = statement.executeQuery();
+//            while (resultSet.next()) {
+//                int assignmentID = resultSet.getInt("assignmentID");
+//                String details = resultSet.getString("details");
+//                int duration = resultSet.getInt("duration");
+//                Tasks task = new Tasks(assignmentID, details, duration);
+//                tasks.add(task);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return tasks;
+//    }
 
 
     public List<Tasks> getTasksByUserID(int userId) {

@@ -50,7 +50,7 @@ public class AssignmentsTable {
         }
 
     }
-
+        //This is to Update assignment, due to time there is no way to update an assignment so this method currently does nothing.
     public void updateAssignment(Assignments assignment) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE Assignments SET classID = ?, time = ?, day=?, weight = ?, type = ?, colour=? WHERE id = ?");
@@ -66,7 +66,7 @@ public class AssignmentsTable {
             e.printStackTrace();
         }
     }
-
+    //This deletes assignments, due to time restraints this hasnt been implemented yet
     public void deleteAssignment(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Assignments WHERE id = ?");
@@ -78,59 +78,13 @@ public class AssignmentsTable {
 
     }
 
-    public Assignments getAssignment(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments WHERE id = ?");
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int classID = resultSet.getInt("classID");
-                String time = resultSet.getString("time");
-                String day = resultSet.getString("day");
-                int weight = resultSet.getInt("weight");
-                String type = resultSet.getString("type");
-                String colour = resultSet.getString("colour");
-                Assignments assignment = new Assignments(classID, time, day, weight, type, colour);
-                assignment.setAssignmentID(id);
-                return assignment;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<Assignments> getAllAssignments() {
-        List<Assignments> assignments = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments");
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int classID = resultSet.getInt("classID");
-                String time = resultSet.getString("time");
-                String day = resultSet.getString("day");
-                int weight = resultSet.getInt("weight");
-                String type = resultSet.getString("type");
-                String colour = resultSet.getString("colour");
-                Assignments assignment = new Assignments(classID, time, day, weight, type, colour);
-                assignment.setAssignmentID(id);
-                assignments.add(assignment);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return assignments;
-    }
-
+//Gets assignments by Class ID
     public List<Assignments> getAssignmentsByClassID(int classId) {
         List<Assignments> assignments = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments WHERE classID = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Assignments WHERE classID = ?");       //Preps SQL statement
             statement.setInt(1, classId);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();     //Executes the SQL
             while (resultSet.next()) {
                 Assignments assignment = new Assignments(
                         resultSet.getInt("classID"),
@@ -140,9 +94,9 @@ public class AssignmentsTable {
                         resultSet.getString("type"),
                         resultSet.getString("colour")
                 );
-                assignment.setAssignmentID(resultSet.getInt("id"));
+                assignment.setAssignmentID(resultSet.getInt("id")); //sets assignment ID and Colour
                 assignment.setColour(resultSet.getString("colour"));
-                assignments.add(assignment);
+                assignments.add(assignment);        //adds to list
             }
         } catch (Exception e) {
             e.printStackTrace();

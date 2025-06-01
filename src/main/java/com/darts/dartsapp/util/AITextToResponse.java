@@ -69,10 +69,10 @@ public class AITextToResponse {
                     if (matcher.find()) {
                         currentTitle = matcher.group(1).trim();
                         currentDuration = Integer.parseInt(matcher.group(2).trim());
-                        System.out.println("✅ Matched: " + currentTitle + " (" + currentDuration + " hours)"); // show the format is working on AI for testing
+                        System.out.println("Matched: " + currentTitle + " (" + currentDuration + " hours)"); // show the format is working on AI for testing
                     } else {
                         currentTitle = line.substring(1).trim(); // If format on AI isn't work for testing
-                        System.out.println("⚠️ Failed to match pattern in: " + line);
+                        System.out.println("FAILED to match pattern in: " + line);
                     }
 
                 } else if (!line.isEmpty() && currentTitle != null) {
@@ -89,7 +89,7 @@ public class AITextToResponse {
             }
 
 
-            System.out.println("✅ Tasks successfully stored.");
+            System.out.println("Tasks SUCCESSFULLY stored.");
 
         } catch (Exception ex) {
             ex.printStackTrace();

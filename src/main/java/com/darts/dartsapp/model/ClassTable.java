@@ -14,7 +14,7 @@ public class ClassTable {
 
     public ClassTable() {
         connection = SqlConnect.getInstance();
-        createTable();
+        createTable();                              //ensures DB Connection and table exists
     }
 
     private void createTable() {
@@ -23,7 +23,7 @@ public class ClassTable {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS Class ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "userID INTEGER NOT NULL,"
+                    + "userID INTEGER NOT NULL,"                        //SQL statement to create Class Table if it doesnt exist already
                     + "className VARCHAR NOT NULL,"
                     + "FOREIGN KEY (userID) REFERENCES Users(id)"
                     + ")";
@@ -37,7 +37,7 @@ public class ClassTable {
     }
 
     public Class createClass(Class newClass) {
-        String sql = "INSERT INTO Class (userID, ClassName) VALUES (?, ?)";
+        String sql = "INSERT INTO Class (userID, ClassName) VALUES (?, ?)";     //SQL to add (insert) new class into DB
         PreparedStatement statement = null;
         ResultSet generatedKeys = null;
 
@@ -50,7 +50,7 @@ public class ClassTable {
             if (affectedRows > 0) {
                 generatedKeys = statement.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    newClass.setID(generatedKeys.getInt(1));
+                    newClass.setID(generatedKeys.getInt(1));        //makes new ID
                     return newClass;
                 } else {
                     System.err.println("Creating class failed, no ID obtained.");
@@ -81,6 +81,8 @@ public class ClassTable {
         }
     }
 
+    //currently no way to update classes so this method does not work, in future this would be used.
+    //intended to be a way to update an existing class
     public void updateClass(Class classes) {
         PreparedStatement statement = null;
         try {
@@ -101,7 +103,7 @@ public class ClassTable {
             }
         }
     }
-
+// currently not in use as there is no way to delete a class, rather delete a time slot which removes it from the calandar.
     public void deleteClass(int id) {
         PreparedStatement statement = null;
         try {
@@ -156,124 +158,25 @@ public class ClassTable {
         return null;
     }
 
-    public List<Class> getAllClasses() {
-        List<Class> classes = new ArrayList<>();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement("SELECT * FROM Class");
-            resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int userID = resultSet.getInt("userID");
-                String className = resultSet.getString("className");
-                Class cls = new Class(userID, className);
-                cls.setID(id);
-                classes.add(cls);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return classes;
-    }
-
-    // Assuming Units class and TimeSlots/Assignments tables exist as per your original code.
-    // This method had some SQL syntax issues (missing spaces before FROM/LEFT JOIN).
-    public List<Units> getUnits(int userIdParam) { // Renamed parameter to avoid conflict with column name
-        List<Units> units = new ArrayList<>();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        // Corrected SQL syntax: added spaces before FROM and LEFT JOIN
-        String sql = "SELECT " +
-                "c.id AS classID, c.className, " + // Added comma
-                "t.id AS timeSlotID, t.time AS timeSlotTime, t.day AS timeSlotDay, t.type AS timeSlotType, t.colour AS timeSlotColour, " + // Added comma, aliased day
-                "a.id AS assignmentID, a.time AS assignmentTime, a.day AS assignmentDay, a.weight AS assignmentWeight, a.type AS assignmentType, a.colour AS assignmentColour " + // Removed trailing comma
-                "FROM Class c " + // Added space
-                "LEFT JOIN TimeSlots t ON t.classID = c.id " + // Added space
-                "LEFT JOIN Assignments a ON a.classID = c.id " + // Added space
-                "WHERE c.userID = ?;";
-
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, userIdParam);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int classID = resultSet.getInt("classID");
-                String className = resultSet.getString("className");
-                int timeSlotID = resultSet.getInt("timeSlotID"); // Make sure to handle if t.id is NULL from LEFT JOIN
-                String time = resultSet.getString("timeSlotTime");
-                String day = resultSet.getString("timeSlotDay"); // Use alias
-                String timeSlotType = resultSet.getString("timeSlotType");
-                String timeSlotColour = resultSet.getString("timeSlotColour");
-                int assignmentID = resultSet.getInt("assignmentID"); // Make sure to handle if a.id is NULL
-                String assignmentTime = resultSet.getString("assignmentTime");
-                String assignmentDay = resultSet.getString("assignmentDay");
-                int weight = resultSet.getInt("assignmentWeight");
-                String assignmentType = resultSet.getString("assignmentType");
-                String assignmentColour = resultSet.getString("assignmentColour");
-
-                // You'll need to handle potential nulls from LEFT JOINs for non-class fields
-                // For example, if a class has no timeslots, timeSlotID might be 0 or time might be null.
-                // The Units constructor needs to be able to handle this.
-
-                Units unit = new Units(classID, className, timeSlotID, time, day, timeSlotType, timeSlotColour,
-                        assignmentID, assignmentTime, assignmentDay, weight, assignmentType, assignmentColour);
-                units.add(unit);
-            }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return units;
-    }
-
     public List<Class> getClassesByUser(int userId) {
         List<Class> classes = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement("SELECT * FROM Class WHERE userID = ?");
-            statement.setInt(1, userId);
+            statement = connection.prepareStatement("SELECT * FROM Class WHERE userID = ?");                //sql statement to select all from class table with matching UserID
+            statement.setInt(1, userId);        //set userid in SQL
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                // int userID = resultSet.getInt("userID"); // userID from parameter is the same
                 String className = resultSet.getString("className");
-                Class cls = new Class(userId, className); // Use userId from parameter for consistency
+
+                //create class using UserID
+                Class cls = new Class(userId, className);
                 cls.setID(id);
                 classes.add(cls);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();            //error handling if issue with DB
         } finally {
             if (resultSet != null) {
                 try {
@@ -295,15 +198,17 @@ public class ClassTable {
 
     public String getClassNameByID(int classID) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT className FROM Class WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT className FROM Class WHERE id = ?");      //query DB for classname using classID
             statement.setInt(1, classID);
             ResultSet resultSet = statement.executeQuery();
+            //return classname if found
             if (resultSet.next()) {
                 return resultSet.getString("className");
             }
-        } catch (Exception e) {
+        } catch (Exception e) { //error handling for any weird errors
             e.printStackTrace();
         }
+        //if not found, return
         return "Unknown";
     }
 

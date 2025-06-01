@@ -74,7 +74,7 @@ public class ToolBarController {
         stage.setScene(scene);
     }
 
-    // takes user to main screen
+    // takes user to screens depending on what is clicked using goTo method
     @FXML
     protected void onMainScreenClick() throws IOException {
         goTo("/com/darts/dartsapp/MainScreen-view.fxml");
@@ -91,7 +91,7 @@ public class ToolBarController {
     protected void onCalendarClick() throws IOException {
         goTo("/com/darts/dartsapp/calendar-view.fxml");
     }
-
+    //takes user to tasks page
     @FXML
     protected void onTasksClick() throws IOException {
         goTo("/com/darts/dartsapp/TasksPage-view.fxml");

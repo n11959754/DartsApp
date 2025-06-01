@@ -44,20 +44,20 @@ public class SignUpController {
 
     @FXML
     protected void onPasswordToggle() throws IOException {
-        if (PasswordToggle.isSelected()) {
+        if (PasswordToggle.isSelected()) {      //if user select show
             VisiblePasswordField.setText(PasswordField.getText());
             VisiblePasswordField.setVisible(true);
-            VisiblePasswordField.setManaged(true);
+            VisiblePasswordField.setManaged(true);          //show the hidden password field
             PasswordField.setVisible(false);
             PasswordField.setManaged(false);
-            PasswordToggle.setText("Hide");
-        } else {
-            PasswordField.setText(VisiblePasswordField.getText());
+            PasswordToggle.setText("Hide");         //updates button to now say hide
+        } else {                                    //toggle between hidden and shown passwords
+            PasswordField.setText(VisiblePasswordField.getText());          //user selects hide
             PasswordField.setVisible(true);
-            PasswordField.setManaged(true);
+            PasswordField.setManaged(true);                 //hides password field
             VisiblePasswordField.setVisible(false);
             VisiblePasswordField.setManaged(false);
-            PasswordToggle.setText("Show");
+            PasswordToggle.setText("Show");                 //changes button to say show when password is hidden
         }
     }
 
@@ -86,7 +86,7 @@ public class SignUpController {
     @FXML
     protected void onButtonLoginClick() throws IOException {
         Stage stage = (Stage) LoginButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/Login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/Login-view.fxml"));          //go to login view when login button is clicked
 
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
         stage.setScene(scene);
@@ -95,30 +95,33 @@ public class SignUpController {
 
     @FXML
     private void onBackButtonClick() throws IOException {
-
+            //gets values from the form
         String username = UsernameField.getText();
         String email = EmailField.getText();
         String phone = PhoneField.getText();
         String rawPassword = PasswordField.isVisible() ? PasswordField.getText() : VisiblePasswordField.getText();
         String password = PasswordField.getText();
-
+        //validates the values
         String SignUpError = ValidateSignUp(username, email, phone, password);
 
         if (SignUpError != null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);         //if fails, show alert
             alert.setTitle("Account Creation Failed");
             alert.setHeaderText(SignUpError);
             alert.showAndWait();
             return;
         }
-
+        //hash fucntion
         PasswordAuthentication auth = new PasswordAuthentication();
         String hashedPassword = auth.hash(rawPassword.toCharArray());
 
+        //create new user and store in DB
         DatabaseController db = new DatabaseController();
         User user = new User(username, email, phone, hashedPassword);
         int userID = db.getUsersTable().createUser(user);
         db.getSettingsTable().createSettings(userID);
+
+        //nav to landing page to allow user to now log in
         Stage stage = (Stage) BackButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/LandingPage-view.fxml"));
 

@@ -48,7 +48,7 @@ public class SettingsPage_Controller {
 
     @FXML
     public void initialize() {
-        fontSizeDropdown.setItems(FXCollections.observableArrayList("Small", "Medium", "Large"));
+        fontSizeDropdown.setItems(FXCollections.observableArrayList("Small", "Medium", "Large"));           //populate font sizes into the dropdown
         fontSizeDropdown.setValue("Medium");
         fontSizeDropdown.setOnAction(e -> applyFontSize());
 
@@ -56,7 +56,7 @@ public class SettingsPage_Controller {
         if (current != null) {
             usernameField.setText(current.getUserName());
             passwordField.setText(current.getPassword());
-            emailField.setText(current.getEmail());
+            emailField.setText(current.getEmail());             //checks user is logged in, if so, show preview in preview box
             phoneField.setText(current.getPhoneNumber());
             birthdayPicker.setValue(current.getBirthday());
             updatePreview();
@@ -67,6 +67,7 @@ public class SettingsPage_Controller {
         editActionButtons.setVisible(false);
         editActionButtons.setManaged(false);
 
+        //apply theme
         Platform.runLater(() -> {
             Scene scene = themeToggle.getScene();
             if (scene != null) {
@@ -75,7 +76,7 @@ public class SettingsPage_Controller {
                 themeToggle.setText(ThemeManager.isDarkMode() ? "Dark" : "Light");
             }
         });
-
+        //actions for the save del button
         saveButton.setOnAction(event -> saveChanges());
         deleteButton.setOnAction(event -> deleteAccount());
     }
@@ -83,7 +84,7 @@ public class SettingsPage_Controller {
     @FXML
     private void onEditClicked() {
         editFormSection.setVisible(true);
-        editFormSection.setManaged(true);
+        editFormSection.setManaged(true);               //reveal the edit tabs when edit button is selected
         editActionButtons.setVisible(true);
         editActionButtons.setManaged(true);
     }
@@ -92,15 +93,15 @@ public class SettingsPage_Controller {
     private void saveChanges() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        String email = emailField.getText();
+        String email = emailField.getText();                    //save new changes from input
         String phone = phoneField.getText();
         LocalDate birthday = birthdayPicker.getValue();
 
-        if (username.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || birthday == null) {
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || birthday == null) {       //validate no empty fields
             showAlert("Missing Fields", "Please fill out all fields.");
             return;
         }
-
+                //update and push changes to the DB
         User current = Session.getCurrentUser();
         if (current != null) {
             current.setUserName(username);
@@ -111,7 +112,7 @@ public class SettingsPage_Controller {
             db.getUsersTable().updateUser(current);
         }
 
-        updatePreview();
+        updatePreview();  //refresh preview
         showAlert("Updated", "Account info updated successfully.");
 
         editFormSection.setVisible(false);
@@ -124,10 +125,10 @@ public class SettingsPage_Controller {
     private void deleteAccount() {
         User current = Session.getCurrentUser();
         if (current == null) {
-            showAlert("Error", "No logged-in user to delete.");
+            showAlert("Error", "No logged-in user to delete.");         //checks if user is logged in
             return;
         }
-
+        //attempt to delete user
         boolean success = db.getUsersTable().deleteUser(current.getUserID());
 
         if (success) {
@@ -152,7 +153,7 @@ public class SettingsPage_Controller {
     private void toggleTheme() {
         boolean isDark = themeToggle.isSelected();
         themeToggle.setText(isDark ? "Dark" : "Light");
-        ThemeManager.setDarkMode(isDark);
+        ThemeManager.setDarkMode(isDark);                   //toggle between light and dark mode, applies theme via the ThemeManager
         Scene scene = themeToggle.getScene();
         if (scene != null) {
             ThemeManager.applyTheme(scene);
@@ -161,19 +162,19 @@ public class SettingsPage_Controller {
 
     @FXML
     private void setTime12() {
-        currentTimeLabel.setText("Current Time: " + LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        currentTimeLabel.setText("Current Time: " + LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm a")));        //toggles 12hr time format
     }
 
     @FXML
     private void setTime24() {
-        currentTimeLabel.setText("Current Time: " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        currentTimeLabel.setText("Current Time: " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));          //toggle 24hr time format
     }
 
     private void applyFontSize() {
         String size = fontSizeDropdown.getValue();
         String css = switch (size) {
             case "Small" -> "-fx-font-size: 12px;";
-            case "Large" -> "-fx-font-size: 20px;";
+            case "Large" -> "-fx-font-size: 20px;";                         //togles font size
             default -> "-fx-font-size: 16px;";
         };
         fontSizeDropdown.getScene().getRoot().setStyle(css);
@@ -182,7 +183,7 @@ public class SettingsPage_Controller {
     private void updatePreview() {
         previewUsername.setText("Username: " + usernameField.getText());
         previewPassword.setText("Password: " + "*".repeat(passwordField.getText().length()));
-        previewEmail.setText("Email: " + emailField.getText());
+        previewEmail.setText("Email: " + emailField.getText());                                         //preview of account info
         previewPhone.setText("Phone: " + phoneField.getText());
         previewBirthday.setText("Birthday: " +
                 (birthdayPicker.getValue() != null ? birthdayPicker.getValue().toString() : ""));
@@ -191,7 +192,7 @@ public class SettingsPage_Controller {
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(null);                                                          //alert message method
         alert.setContentText(message);
         alert.showAndWait();
     }

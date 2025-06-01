@@ -25,13 +25,13 @@ public class LandingPageController {
 
     @FXML
     public void initialize() {
-        try {
+        try {       //attempts to displays the landing page image
             InputStream imageStream = getClass().getResourceAsStream("/com/darts/dartsapp/images/placeholder1.png");
             if (imageStream != null) {
                 Image image = new Image(imageStream);
                 imageView.setImage(image);
             } else {
-                System.err.println("Image not found: /com/darts/dartsapp/images/placeholder1.png");
+                System.err.println("Image not found: /com/darts/dartsapp/images/placeholder1.png");         //error if image is missing / changed / deleted
             }
         } catch (Exception e) {
             e.printStackTrace();
