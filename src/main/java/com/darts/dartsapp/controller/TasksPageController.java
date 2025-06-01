@@ -182,10 +182,6 @@ public class TasksPageController {
         refreshTaskList();
     }
 
-    @FXML
-    private void onSelectButtonClick() {
-        // not complete
-    }
 
     @FXML
     private void onEditButtonClick() {

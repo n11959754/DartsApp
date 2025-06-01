@@ -186,51 +186,50 @@ public class MainScreenController {
 
         LocalDate today = LocalDate.now();
 
-        allAssignments.removeIf(a -> LocalDate.parse(a.getDay()).isBefore(today));
-        allAssignments.sort(Comparator.comparing(a -> LocalDate.parse(a.getDay())));
 
-        List<Assignments> top4 = allAssignments.stream().limit(4).toList();
+        allAssignments.removeIf(a -> LocalDate.parse(a.getDay()).isBefore(today)); //ensures only assignments comming up are shown, not past
+
+        // Sort by soonest due
+        allAssignments.sort(Comparator.comparing(a -> LocalDate.parse(a.getDay())));   //sorts by soonest to furtherest
+
+
+        List<Assignments> top4 = allAssignments.stream().limit(4).toList();      //takes the top 4 of above as it will only display 4 assignments
         container.getChildren().clear();
 
         for (Assignments a : top4) {
             LocalDate dueDate = LocalDate.parse(a.getDay());
             long daysLeft = java.time.temporal.ChronoUnit.DAYS.between(today, dueDate);
 
-            // ITS HERE DUMMY //
-            String dueLabel;
-            if (daysLeft == 0) {
-                dueLabel = "Today";
-            } else if (daysLeft == 1) {
-                dueLabel = "1 Day";
-            } else {
-                dueLabel = daysLeft + " Days";
-            }
+            String dueLabel = switch ((int) daysLeft) {
+                case 0 -> "Today";
+                case 1 -> "1 Day";
+                default -> daysLeft + " Days";
+            };
+
             String className = classTable.getClassNameByID(a.getClassID());
+            String assignmentType = a.getType();
+            String displayText = className + " — " + assignmentType;
 
             HBox row = new HBox(10);
             row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
-            Label name = new Label(className);
+            Label name = new Label(displayText);
             name.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 16px;");
 
             Region spacer = new Region();
             HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
-            String colour;
-            if (daysLeft <= 2) {
-                colour = "#FF5252"; // red (urgent)
-            } else if (daysLeft <= 7) {
-                colour = "#FFEB3B"; // yellow (semi urgenct)
-            } else {
-                colour = "#69F0AE"; // green (non urgent)
-            }
+            String colour = switch ((int) daysLeft) {
+                case 0, 1, 2 -> "#FF5252";     //red, means urgent
+                case 3, 4, 5, 6, 7 -> "#FFEB3B"; //yellow, means semi-urgent
+                default -> "#69F0AE";         //green, chill
+            };
 
             Label dueIn = new Label(dueLabel);
             dueIn.setStyle("-fx-text-fill: " + colour + "; -fx-font-size: 16px;");
 
             row.getChildren().addAll(name, spacer, dueIn);
             container.getChildren().add(row);
-
         }
     }
 
