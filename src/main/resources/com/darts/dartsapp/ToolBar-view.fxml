@@ -10,7 +10,7 @@
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.darts.dartsapp.controller.ToolBarController"
-      prefHeight="60.0"
+      prefHeight="56"
       alignment="CENTER_LEFT"
       spacing="10"
       style="-fx-background-color: #2F638F;">
