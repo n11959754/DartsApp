@@ -67,54 +67,44 @@ public class ToolBarController {
         });
     }
 
+    private void goTo(String fxmlPath) throws IOException{
+        Stage stage = (Stage) MainScreen.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));           //helper method used when user is selected different pages, did it this way to prevent repeated code
+        Scene scene = new Scene (loader.load(), 1324, 768);
+        stage.setScene(scene);
+    }
+
     // takes user to main screen
     @FXML
     protected void onMainScreenClick() throws IOException {
-        Stage stage = (Stage) MainScreen.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
-        stage.setScene(scene);
+        goTo("/com/darts/dartsapp/MainScreen-view.fxml");
     }
 
     // takes user to settings
     @FXML
     protected void onSettingsClick() throws IOException {
-        Stage stage = (Stage) Settings.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/SettingsPage-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
-        stage.setScene(scene);
+        goTo("/com/darts/dartsapp/SettingsPage-view.fxml");
     }
 
     // takes user to calendar page
     @FXML
     protected void onCalendarClick() throws IOException {
-        Stage stage = (Stage) Calendar.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/calendar-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
-        stage.setScene(scene);
+        goTo("/com/darts/dartsapp/calendar-view.fxml");
     }
 
     @FXML
     protected void onTasksClick() throws IOException {
-        Stage stage = (Stage) Tasks.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/TasksPage-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
-        stage.setScene(scene);
+        goTo("/com/darts/dartsapp/TasksPage-view.fxml");
     }
     @FXML
     protected void onCanvasClick() throws IOException {
-        String url = "https://canvas.qut.edu.au/";
+        String url = "https://canvas.qut.edu.au/";                          //opens canvas in default browser
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
     }
 
     @FXML
     protected void onEmailClick() throws IOException {
-        String url = "https://outlook.office365.com/mail/";
+        String url = "https://outlook.office365.com/mail/";                     //opens outlook on default browser.
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
     }
-
 }
