@@ -39,27 +39,27 @@ public class LoginController {
 
     @FXML
     protected void onPasswordToggle() throws IOException {
-        if (PasswordToggle.isSelected()) {
+        if (PasswordToggle.isSelected()) {      //if user selected show
             VisiblePasswordField.setText(PasswordField.getText());
             VisiblePasswordField.setVisible(true);
-            VisiblePasswordField.setManaged(true);
+            VisiblePasswordField.setManaged(true);      //show the hidden password field
             PasswordField.setVisible(false);
             PasswordField.setManaged(false);
-            PasswordToggle.setText("Hide");
-        } else {
-            PasswordField.setText(VisiblePasswordField.getText());
+            PasswordToggle.setText("Hide");     //updates button to show Hide when password is shown
+        } else {                                        //toggle between hidden and shown password
+            PasswordField.setText(VisiblePasswordField.getText());      //else (user selected hide)
             PasswordField.setVisible(true);
-            PasswordField.setManaged(true);
+            PasswordField.setManaged(true);                 //hides password
             VisiblePasswordField.setVisible(false);
             VisiblePasswordField.setManaged(false);
-            PasswordToggle.setText("Show");
+            PasswordToggle.setText("Show");             //makes button say show when password is hidden
         }
     }
-    //.
+
     @FXML
     protected void onButtonSignUpClick() throws IOException {
         Stage stage = (Stage) SignUpButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/SignUp-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/SignUp-view.fxml"));             //takes user to signup page
 
         Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
         stage.setScene(scene);
@@ -67,7 +67,7 @@ public class LoginController {
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Login Failed");
+        alert.setTitle("Login Failed");                     //method to display error message
         alert.setHeaderText(message);
         alert.showAndWait();
     }
@@ -77,13 +77,13 @@ public class LoginController {
     protected void onButtonLoginClick() throws IOException {
 
         db = new DatabaseController();
-        User user = db.getUsersTable().getUser(UsernameField.getText());
+        User user = db.getUsersTable().getUser(UsernameField.getText());            //create db controller + retreive user by entered username
 
         if (user==null) {
-            showError("Username or Password is incorrect.");
+            showError("Username or Password is incorrect.");            //error for when user doesnt exist
         }
 
-        // Comparing stored hash password value to entered password
+        //compares stored hash password value to entered password
         String storedHash = user.getPassword();
         String enteredPassword = PasswordToggle.isSelected()
                 ? VisiblePasswordField.getText()
@@ -94,12 +94,12 @@ public class LoginController {
         if (authenticated) {
             Session.setCurrentUser(user);
             Stage stage = (Stage) SignUpButton.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/darts/dartsapp/MainScreen-view.fxml"));     //if correct, take user to mainscreen and "log them in" by making them the current user in the session
             Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
             stage.setScene(scene);
         }
         else {
-            showError("Username or Password is incorrect.");
+            showError("Username or Password is incorrect.");        //passes error message to be displayed by showError method
         }
 
 

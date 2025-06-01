@@ -23,7 +23,7 @@ public class AITextToResponse {
                         "Please break this assignment into smaller tasks, each as a bullet point starting with '•'. " +
                         "Each task should include a short title, an estimated duration in full hours (which means no decimals/half hours) in parentheses, and a short description. " +
                         "Make sure all durations add up to %s hours. Please format the list of tasks with the dot point as previously stated, followed by **title of task** (x hours). then on a line underneath the description." +
-                        "Please keep your response under 35 words.",
+                        "Please keep your response under 45 words.",
                 selectedAssignment, dueDay, dueTime, LocalDate.now(), allocatedTimeText, allocatedTimeText
         );
 
@@ -56,7 +56,9 @@ public class AITextToResponse {
                 if (line.startsWith("•")) {
                     // Save previous task
                     if (currentTitle != null) {
-                        String fullTask = currentTitle + " - " + currentDescription.toString().trim();
+                        String description = currentDescription.toString().trim();
+                        if (description.isEmpty()) description = "(No description)";
+                        String fullTask = currentTitle + " - " + description;
                         tasksTable.createTask(new Tasks(assignmentID, fullTask, currentDuration));
                     }
 
@@ -80,7 +82,9 @@ public class AITextToResponse {
 
 
             if (currentTitle != null) {
-                String fullTask = currentTitle + " - " + currentDescription.toString().trim();
+                String description = currentDescription.toString().trim();
+                if (description.isEmpty()) description = "(No description)";
+                String fullTask = currentTitle + " - " + description;
                 tasksTable.createTask(new Tasks(assignmentID, fullTask, currentDuration));
             }
 
