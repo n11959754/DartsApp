@@ -40,22 +40,22 @@ public class LandingPageController {
 
     @FXML
     protected void onButtonSignUpClick() {
-        loadScene("/com/darts/dartsapp/SignUp-view.fxml");
+        loadScene("/com/darts/dartsapp/SignUp-view.fxml"); //makes fxml = to the signuppage fxml which is used in the loadScene method
     }
 
     @FXML
     protected void onButtonLoginClick() {
         loadScene("/com/darts/dartsapp/Login-view.fxml");
-    }
+    }                                                               //makes fxml = to the loginPage fxml which is used in the loadScene method
 
     private void loadScene(String fxmlPath) {
         try {
             Stage stage = (Stage) SignUp.getScene().getWindow(); // works for both buttons
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));       //switches scene depending on the button selected
             Scene scene = new Scene(fxmlLoader.load(), 1324, 768);
             stage.setScene(scene);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();                                        //error handing incase the FXML path was removed or changed (prevents crashing)
             System.err.println("Failed to load FXML: " + fxmlPath);
         }
     }
